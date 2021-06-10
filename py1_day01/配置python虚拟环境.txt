@@ -1,0 +1,20 @@
+[root@host50 ~]# python3 -m venv ~/mypy     # -m  调用模块venv  指定虚拟目录~/mypv
+
+[root@host50 ~]# ls /root/mypy/ -a
+.  ..  bin  include  lib  lib64  pyvenv.cfg
+[root@host50 ~]# 
+
+[root@host50 ~]# source ~/mypy/bin/activate
+
+(mypy) [root@host50 ~]# python --version
+Python 3.6.10
+(mypy) [root@host50 ~]# 
+
+(mypy) [root@host50 ~]# python
+Python 3.6.10 (default, Jun  8 2021, 14:52:00) 
+[GCC 4.8.5 20150623 (Red Hat 4.8.5-28)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+>>> exit()
+
+注: rm  -rf  ~/mypy   就可以把虚拟环境删除了 

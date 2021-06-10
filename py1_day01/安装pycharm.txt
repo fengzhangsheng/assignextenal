@@ -1,0 +1,12 @@
+软件说名
+pycharm-professional-2020.1.1.tar.gz  pycharm图形工具软件 安装步骤见 pycharm_install_4_redhat8.pdf
+
+
+jetbrains-agent-latest.zip 软件破解插件 (把安装好的pycharm软件打开，新建项目后 把软件拖拽到在项目
+右边空白的窗口里，根据提示操作即可 )
+
+安装插件 文件--> 设置 ---> plugins ---> 齿轮图标 ---> install from disk ----> 找到对应的软件---> ok  
+TranslationPlugin-2.8.1.zip 翻译插件
+zh.201.15.jar 汉化插件
+intellij-rainbow-brackets-6.9.1.zip 彩虹括号插件
+

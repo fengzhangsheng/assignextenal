@@ -1,0 +1,33 @@
+]# yum install -y gcc gcc-c++ zlib-devel openssl-devel readline-devel  \
+libffi-devel sqlite-devel tcl-devel tk-devel
+
+]# tar -zxvf Python-3.6.10.tgz 
+]# cd Python-3.6.10/
+
+]# ./configure  --prefix=/usr/local
+]# make
+]# make install
+
+]# ls /usr/local/bin/
+
+安装完python3解释器后,做如下操作：
+]# vim  /usr/local/bin/tab.py
+from rlcompleter import readline
+readline.parse_and_bind('tab: complete')
+:wq
+
+]# vim  ~/.bashrc
+export PYTHONSTARTUP=/usr/local/bin/tab.py
+:wq
+
+]# source ~/.bashrc
+
+[root@host50 Python-3.6.10]# echo $PYTHONSTARTUP
+/usr/local/bin/tab.py
+
+[root@host50 Python-3.6.10]# python3
+Python 3.6.10 (default, Jun  8 2021, 14:52:00) 
+[GCC 4.8.5 20150623 (Red Hat 4.8.5-28)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> pri 按tab键可以补全命令了
+
