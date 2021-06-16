@@ -1,0 +1,138 @@
+一 文件管理
+	1.1  文件：一首歌  一部电影  一篇文章   写过的python脚本
+	
+	1.2 文件的操作流程
+		  1. 打开文件 open（）
+  		  2. 读/写文件 read()/write()
+  		  3. 关闭文件 close()
+
+  read() 函数的使用
+  
+>>> f = open("/code/a.txt",'r')
+>>> data=f.read()
+>>> f.read()
+''
+>>>f.close()
+>>> type(data)
+<class 'str'>
+>>> print(data)
+
+>>> f = open("/code/a.txt",'r')
+>>> f.read(4)
+'root'
+>>> f.read()  #读剩下的所有
+
+
+readline() 函数的使用
+>>> f = open("/code/a.txt",'r')
+>>> f.readline()
+'root:x:0:0:root:/root:/bin/bash\n'
+>>> 
+>>> f.readline()
+'bin:x:1:1:bin:/bin:/sbin/nologin\n'
+>>> 
+>>> f.readline()
+'daemon:x:2:2:daemon:/sbin:/sbin/nologin\n'
+>>> 
+>>> f.readline()
+'adm:x:3:4:adm:/var/adm:/sbin/nologin\n'
+>>> 
+>>> f.readline()
+'lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin\n'
+>>> f.readline()
+''
+>>> f.close()
+>>> 
+
+
+readlines()
+>>> f = open("/code/a.txt",'r')
+>>> data = f.readlines()
+>>> type(data)
+<class 'list'>
+>>> print(data)
+['root:x:0:0:root:/root:/bin/bash\n', 'bin:x:1:1:bin:/bin:/sbin/nologin\n', 'daemon:x:2:2:daemon:/sbin:/sbin/nologin\n', 'adm:x:3:4:adm:/var/adm:/sbin/nologin\n', 'lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin\n']
+>>> 
+
+>>> data[0]
+'root:x:0:0:root:/root:/bin/bash\n'
+>>> 
+>>> data[1]
+'bin:x:1:1:bin:/bin:/sbin/nologin\n'
+>>> 
+>>> for  x in  data:
+...     print(x)
+... 
+root:x:0:0:root:/root:/bin/bash
+
+bin:x:1:1:bin:/bin:/sbin/nologin
+
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+
+>>> 
+
+[root@teacher code]# cat 3_1.py 
+f = open("/code/a.txt",'r')
+data = f.readlines()
+
+for x  in  data:
+        print(x)
+
+[root@teacher code]# 
+
+write() 向文件添加内容
+
+>>> f = open('/code/c.txt','w')
+>>> f.write('ABCDE\n')
+6
+>>> f.write('23456\n')
+6
+>>> f.close()
+>>> 
+
+writelines() 向文件添加内容
+>>> f = open('/code/c.txt','a')
+>>> f.writelines(["wo kun le \n","bix shui \n"," xue bu hui\n"])
+>>> f.writelines(["wo kun le \n","bix shui \n"," xue bu hui\n"])
+>>> f.close()
+>>> 
+
+
+seek(offset[, whence])：移动文件指针到不同的位置
+
+offset是相对于某个位置的偏移量
+
+whence的值，0表示文件开头，1表示当前位置，2表示文件的结尾
+
+tell()：返回当前文件指针的位置
+
+>>> f = open('/code/c.txt','r')
+>>> f.tell()
+0
+>>> f.seek(0,2)
+83
+>>> f.tell()
+83
+>>> f.read()
+''
+>>> f.seek(0,0)
+0
+>>> f.read(10)
+'dafafABCDE'
+>>> f.tell()
+10
+>>> 
+
+with 子句 可以把打开的文件自动关闭
+>>> with open("/code/c.txt",'r') as fobj:
+...     data = fobj.readlines()
+... 
+>>> fobj.closed
+True
+>>> print(data)
+['dafafABCDE\n', '23456\n', 'wo kun le \n', 'bix shui \n', ' xue bu hui\n', 'wo kun le \n', 'bix shui \n', ' xue bu hui\n']
+>>> 
