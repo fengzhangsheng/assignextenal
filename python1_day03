@@ -138,22 +138,141 @@ True
 >>> 
 
 从当前位置移动指针
-
+]# head -5 /etc/passwd > a.txt
+>>> f = open('/code/a.txt','rb')
+>>> f.tell()
+0
+>>> f.read(10)
+b'root:x:0:0'
+>>> f.tell()
+10
+>>> f.seek(2,1) #正数  从当前位置向右移动 2个字符
+12
+>>> f.tell()
+12
+>>> f.seek(-2,1) #负数 从当前位置向左移动 2个字符
+10
+>>> 
 
 ******************函数基础**********************************************
 1.1  定义函数
+#功能计算数字10+10的和
+def numsum():
+       s = 10 + 10
+       print("10 + 10 =",s)
+       return s
 
 
 1.2  调用函数
 
+numsum()
+
 
 1.3 函数参数
+def numsum(a,b):
+        s = a + b
+        print(a , "+" , b , "=" , s)
 
+numsum(10,20)
+numsum(1,3)
 
 1.4 函数位置参数
+#功能计算任意个数相加和的脚本 可以在执行脚本输入 要计算的数
+import sys
+x=sys.argv
+
+y = 1
+sum = 0
+#while  y  < len(x):
+for  y in range(1,len(x)):
+        sum += int(x[y])
+        y += 1
+print("相加的和是: ",sum) 
+
+[root@teacher code]# python3 fun2.py  10 20 30
+相加的和是:  60
+[root@teacher code]# python3 fun2.py  10 20 30 90
+相加的和是:  150
+[root@teacher code]# 
 
 
 1.5 参数默认值
+#给函数的参数设置默认值，如果有多个形参默认值要在参数列表的末尾
+  
+#功能输出指定个数* 的一条线
+def  lines(y,x=20):
+        print("形参y的值是:",y)
+        print("*" * x)
+
+lines(56)
+lines(45,60)
+
+
+
+1.6 函数返回值
+def numsum():
+       s = 10 + 10
+       print("10 + 10 =",s)
+       return s
+
+x=numsum()
+print(x)
 
 计算器练习题
+
+[root@teacher code]# cat jsq1.py 
+jslx = input("请选择你要做什么运算：+  -  *  / ")
+L = []
+while True:
+        x = input("请输入要计算的数字,敲回车结束输入")          
+        if x == "":
+            break
+        L.append(x)
+
+def  he():
+        x = 0 #累加的和
+        y = 0 #定义循环结构的初值
+        while  y < len(L):    
+                x += int(L[y])
+                y += 1  
+        print("相加的和 = ", x)
+def cha():
+        x = int(L[0]) #做减法计算的初值
+        for  y  in range(1,len(L)):
+                x -= int(L[y])
+        print("相减的差 = ", x)
+def ji():
+        x = int(L[0]) #做乘法计算的初值
+        for  y  in range(1,len(L)):
+                x *= int(L[y])
+        print("相乘的积 = ", x)
+def shang():
+x = int(L[0]) #做除法计算的初值
+        for  y  in range(1,len(L)):
+                x //= int(L[y])
+        print("相除的商 = ", x)
+
+if jslx == "+":
+        he()
+
+elif jslx == "-":
+        cha()
+
+elif jslx == "*":
+        ji()
+
+elif jslx == "/":
+        shang()
+
+
+[root@teacher code]# python3 jsq1.py 
+请选择你要做什么运算：+  -  *  / +  
+请输入要计算的数字,敲回车结束输入1
+请输入要计算的数字,敲回车结束输入3
+请输入要计算的数字,敲回车结束输入4
+请输入要计算的数字,敲回车结束输入7
+请输入要计算的数字,敲回车结束输入
+相加的和 =  15
+[root@teacher code]# 
+
 
