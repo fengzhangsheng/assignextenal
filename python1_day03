@@ -275,4 +275,69 @@ elif jslx == "/":
 相加的和 =  15
 [root@teacher code]# 
 
+**********************模块基础**************************
+模块  一个.py 文件就是一个模块 ，模块是含有一些列数据，函数，类等的程序
+
+- 作用 把相关功能的函数等放在一起有利于管理，有利于多人合作开发
+
+休息到 16：15 
+- 模块的分类
+  1. 内置模块（在python3 程序内部，可以直接使用）
+  2. 标准库模块(在python3 安装完后就可以使用的 )
+  3. 第三方模块（需要下载安装后才能使用）
+  4. 自定义模块(用户自己编写)
+
+导入模块  import  模块名 
+         import  模块名列表
+         from 模块名  import 函数
+例子
+>>> import os
+>>> import sys , string
+>>> from random import randint
+>>> string.digits
+'0123456789'
+>>> randint(1,3)
+3
+
+模块的特殊变量 __name__
+直接执行脚本时 __name__ 变量的值 是 __main__  被当做模块导入是 值是脚本名
+
+应用如下
+
+[root@teacher code]# cat cfb.py 
+def jjcfb():
+    j = 1
+    while j <= 9:
+        j += 1
+        print(j)
+
+if __name__ == '__main__':
+        jjcfb()
+[root@teacher code]# cat 10.py 
+import cfb
+#cfb.jjcfb()
+cfb.jjcfb()
+print("+" *  50)
+[root@teacher code]# python3 10.py 
+2
+3
+4
+5
+6
+7
+8
+9
+10
+++++++++++++++++++++++++++++++++++++++++++++++++++
+[root@teacher code]# 
+
+
+
+
+
+
+
+
+
+
 
