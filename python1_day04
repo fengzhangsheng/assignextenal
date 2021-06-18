@@ -133,3 +133,16 @@ True
 >>> print(x)
 2
 >>> 
+
+>>> del L6   #删除变量
+>>> print(L3)
+['a', 100, 200, 'TOM']
+>>> 
+>>> L3 = []   # 清空列表元素
+>>> print(L3)
+[]
+>>> print(L6)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'L6' is not defined
+>>> 
