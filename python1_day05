@@ -304,17 +304,6 @@ setdefault()   方法
 >>> d4
 {'name': 'bob', 'age': 19, 'school': 'tarena', 'class': None}
 
-
-
-
-
-
-
-
-
-
-
-
 items()
 >>> d1.items()
 dict_items([('name', 'bob'), ('age', 19), ('gender', 'boy'), ('school', None), ('class', None)])
@@ -395,4 +384,186 @@ bob
 19
 tarena
 None
+>>> 
+
+
+使用 for循环遍历字典
+>>> d4
+{'name': 'bob', 'age': 19, 'school': 'tarena'}
+
+输出每个元素的key 
+
+>>> for i  in d4.keys():
+...     print(i)
+... 
+name
+age
+school
+class
+>>> 
+输出每个元素的值 
+      
+>>> d4.values()
+dict_values(['bob', 19, 'tarena', None])
+>>> for i in d4.values():
+...     print(i)
+... 
+bob
+19
+tarena
+None
+>>> 
+	   
+把key  和  key 对应的值 一起输出 	   
+>>> d4.items()
+dict_items([('name', 'bob'), ('age', 19), ('school', 'tarena'), ('class', None)])
+>>> 
+>>> for   i  ,  j   in d4.items():
+...     print(i,j)
+... 
+name bob
+age 19
+school tarena
+class None
+>>> 
+>>> d4
+{'name': 'bob', 'age': 19, 'school': 'tarena', 'class': None}
+>>> 
+>>> for i  in d4.keys():
+...     print(d4[i])
+... 
+bob
+19
+tarena
+None
+>>> 	   
+	   
+
+
+集合数据类型的使用
+	容器类型  也可以存储多个数据  
+	无序  可变  值不允许重复
+	set()   定义的是可变集合 类型
+	frozenset()  定义的是不可变集合 类型
+	
+定义集合类型的变量
+>>> s1 = set("hello")
+>>> type(s1)
+<class 'set'>
+>>> 
+>>> print(s1)
+{'e', 'o', 'l', 'h'}
+>>> 
+>>> s2 = {"a",3,0,"w"}
+>>> type(s2)
+<class 'set'>
+>>> s2
+{0, 'a', 3, 'w'}
+>>> 
+
+>>> s3 = frozenset( {1,"a","c",3.14} )
+>>> type(s3)
+<class 'frozenset'>
+>>>
+
+集合类型的比较符号 in   not  in  
+
+>>> s3
+frozenset({1, 3.14, 'a', 'c'})
+>>> 
+>>> 'plj'  in s3
+False
+>>> 
+>>> 'c'  in s3
+True
+>>> 
+>>> 'plj'  not in s3
+True
+>>> 
+>>> len(s2)       #统计集合元素的个数
+4
+>>> s2
+{0, 'a', 3, 'w'}
+>>> 
+
+
+
+
+集合的内建方法
+add(值)          添加
+remove(值)  移除
+
+>>> s2
+{0, 'a', 3, 'w'}
+>>> 
+>>> s2.add('bb')
+>>> 
+>>> s2
+{0, 3, 'a', 'w', 'bb'}
+>>> 
+>>> s2.remove(3)
+>>> 
+>>> s2
+{0, 'a', 'w', 'bb'}
+>>> 
+
+update(值) 
+>>> s2
+{0, 'a', 'w', 'bb'}
+>>> s2.update('ABCDE')
+>>> s2
+{0, 'D', 'a', 'E', 'A', 'w', 'C', 'B', 'bb'}
+>>> 
+>>> s2.update(["bob",3.88, True])
+>>> s2
+{0, 'D', True, 3.88, 'a', 'E', 'A', 'w', 'C', 'B', 'bb', 'bob'}
+>>> 
+
+issubset()
+issuperset()
+
+>>> s3
+{'b', 'c', 'a', 'd'}
+>>> s4
+{'z', 'k', 'a', 'w'}
+>>> 
+>>> s3.issubset(s4)
+False
+>>> s3.issuperset(s4)
+False
+>>> 
+
+
+
+union()   并集比较方法
+insertsection()    交集比较方法
+difference()   差集比较方法
+
+集合类型的比较符号
+&    交集     返回2个集合里都有的数据
+|      并集    把符号 2边的集合合并并去掉重复值   
+-     差集     用符号左边和 右边的比较 ，显示左边比右边多的数据 
+
+>>> s1 = {"西游记","红楼梦","水浒传","三国演绎"}
+>>> s2 = {"金瓶梅","牡丹亭","聊斋志异","红楼梦"}
+>>> 
+>>> s1  & s2    # 获取集合中都有的数据
+{'红楼梦'}
+>>> 
+>>> x = s1  & s2    等效于  s1.intersection(s2)
+>>> print(x)
+{'红楼梦'}
+>>> 
+>>> s1  |  s2    等效于     s1.union(s2)
+
+{'水浒传', '三国演绎', '牡丹亭', '西游记', '红楼梦', '聊斋志异', '金瓶梅'}
+>>> 
+
+>>> 
+-  差集  ： 用符号左边和 右边的比较 ，显示左边比右边多的数据 
+>>> s1  -  s2       等效于   s1.difference(s2)
+{'西游记', '水浒传', '三国演绎'}
+>>> 
+>>> s2  -  s1    
+{'聊斋志异', '牡丹亭', '金瓶梅'}
 >>> 	   
