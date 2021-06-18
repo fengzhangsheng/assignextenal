@@ -285,6 +285,36 @@ get()  方法
 
 setdefault()   方法
 
+>>> del d4
+>>> 
+>>> d4 = {'name':"bob" , 'age':19}
+>>> d4
+{'name': 'bob', 'age': 19}
+>>> d4.setdefault('name')
+'bob'
+>>> d4.setdefault('school','tarena')
+'tarena'
+>>> d4
+{'name': 'bob', 'age': 19, 'school': 'tarena'}
+>>> 
+>>> d4.setdefault('name')
+'bob'
+>>> d4.setdefault('class')
+>>> d4.setdefault('class',"2103")
+>>> d4
+{'name': 'bob', 'age': 19, 'school': 'tarena', 'class': None}
+
+
+
+
+
+
+
+
+
+
+
+
 items()
 >>> d1.items()
 dict_items([('name', 'bob'), ('age', 19), ('gender', 'boy'), ('school', None), ('class', None)])
