@@ -155,3 +155,162 @@ Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
 NameError: name 'L6' is not defined
 >>> 
+
+
+三、字典类型数据的管理
+		3.1   字典类型数据的特点 (背诵)
+		
+		3.2 定义字典类型的数据
+>>> d1 = {}
+>>> d2 = dict()
+
+>>> type(d1)
+<class 'dict'>
+>>> type(d2)
+<class 'dict'>
+>>> 		
+		
+>>> d3 = {}.fromkeys(("tom","lucy","lili"),18)
+>>> print(d3)
+{'tom': 18, 'lucy': 18, 'lili': 18}
+>>> 
+
+>>> d4 = {"name":"bb" , "gender":"boy" , "age":30}
+>>> print(d4)
+{'name': 'bb', 'gender': 'boy', 'age': 30}
+>>> 
+>>> type(d4)
+<class 'dict'>
+
+
+字典元素没有下标 ， 要通过键值访问字典元素
+>>> d4['name']
+'bb'
+>>> d4['age']
+30
+>>> d4['gender']
+'boy'
+>>> 
+
+如果访问的键值存在 是更新   不存储就是添加新元素
+>>> d4['school']="tarena"
+>>> d4
+{'name': 'bb', 'gender': 'boy', 'age': 30, 'school': 'tarena'}
+>>> 
+>>> d4['name']="niuqun"
+>>> d4
+{'name': 'niuqun', 'gender': 'boy', 'age': 30, 'school': 'tarena'}
+>>> 
+
+
+删除 操作 
+>>> d4
+{'name': 'niuqun', 'gender': 'boy', 'age': 30, 'school': 'tarena'}
+>>> del d4['name']
+>>> d4
+{'gender': 'boy', 'age': 30, 'school': 'tarena'}
+>>> 
+>>> d4.clear()
+>>> d4
+{}
+>>> del d4
+>>> print(d4)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'd4' is not defined
+>>> 
+
+字典判断符号  in   not  in 
+>>> d4 = {"name":"bb" , "gender":"boy" , "age":30}
+>>> d4
+{'name': 'bb', 'gender': 'boy', 'age': 30}
+>>> 
+>>> 'name' in  d4
+True
+>>> 
+>>> 'bb' in  d4
+False
+>>> 
+>>> 'bb' not in  d4
+True
+>>> 
+
+len(变量名)    通用函数  统计长度 
+>>> s1 = "abc"
+>>> len(s1)
+3
+>>> L1 = list("abcde")
+>>> L1
+['a', 'b', 'c', 'd', 'e']
+>>> len(L1)
+5
+>>> t1 = ( 99 , 83 , "a" , "f")
+>>> t1
+(99, 83, 'a', 'f')
+>>> len(t1)
+4
+
+>>> d4
+{'name': 'bb', 'gender': 'boy', 'age': 30}
+>>> len(d4)
+3
+>>> 
+
+字典的内建方法
+copy()  拷贝
+
+>>> d4.copy()
+{'name': 'bb', 'gender': 'boy', 'age': 30}
+>>> 
+>>> dd4 =d4.copy()
+>>> dd4
+{'name': 'bb', 'gender': 'boy', 'age': 30}
+>>> d4
+{'name': 'bb', 'gender': 'boy', 'age': 30}
+>>> 
+
+get()  方法
+>>> d1 = {'name':"bob" , 'age':19 , 'gender':"boy"}
+>>> d1
+{'name': 'bob', 'age': 19, 'gender': 'boy'}
+>>> 
+>>> d1.get('school')
+>>> 
+>>> d1.get('name')
+'bob'
+>>> 
+>>> d1.get('school',"not set define")
+'not set define'
+>>> 
+
+setdefault()   方法
+
+items()
+>>> d1.items()
+dict_items([('name', 'bob'), ('age', 19), ('gender', 'boy'), ('school', None), ('class', None)])
+>>> 
+
+keys()
+
+>>> d1
+{'name': 'bob', 'age': 19, 'gender': 'boy', 'school': None, 'class': Non
+>>> d1.keys()
+dict_keys(['name', 'age', 'gender', 'school', 'class'])
+
+values()
+>>> d1
+{'name': 'bob', 'age': 19, 'gender': 'boy', 'school': None, 'class': None}
+>>> 
+>>> d1.values()
+dict_values(['bob', 19, 'boy', None, None])
+
+update()
+>>> d1
+{'name': 'bob', 'age': 19, 'gender': 'boy', 'school': None, 'class': None}
+>>> 
+>>> d2 = {"成绩":98 , "排名":5}
+>>> 
+>>> d1.update(d2)
+>>> print(d1)
+{'name': 'bob', 'age': 19, 'gender': 'boy', 'school': None, 'class': None, '成绩': 98, '排名': 5}
+>>> 
