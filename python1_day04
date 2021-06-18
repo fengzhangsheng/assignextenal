@@ -344,3 +344,55 @@ update()
 >>> print(d1)
 {'name': 'bob', 'age': 19, 'gender': 'boy', 'school': None, 'class': None, '成绩': 98, '排名': 5}
 >>> 
+
+
+使用 for循环遍历字典
+>>> d4
+{'name': 'bob', 'age': 19, 'school': 'tarena'}
+
+输出每个元素的key 
+
+>>> for i  in d4.keys():
+...     print(i)
+... 
+name
+age
+school
+class
+>>> 
+输出每个元素的值 
+      
+>>> d4.values()
+dict_values(['bob', 19, 'tarena', None])
+>>> for i in d4.values():
+...     print(i)
+... 
+bob
+19
+tarena
+None
+>>> 
+	   
+把key  和  key 对应的值 一起输出 	   
+>>> d4.items()
+dict_items([('name', 'bob'), ('age', 19), ('school', 'tarena'), ('class', None)])
+>>> 
+>>> for   i  ,  j   in d4.items():
+...     print(i,j)
+... 
+name bob
+age 19
+school tarena
+class None
+>>> 
+>>> d4
+{'name': 'bob', 'age': 19, 'school': 'tarena', 'class': None}
+>>> 
+>>> for i  in d4.keys():
+...     print(d4[i])
+... 
+bob
+19
+tarena
+None
+>>> 	   
