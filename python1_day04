@@ -1,0 +1,389 @@
+1.2 subprocess模块，提供run() 方法 执行系统命令
+>>> import subprocess
+
+>>> subprocess.run('ls')
+anaconda-ks.cfg  a.txt  b.txt  d.txt  e.txt  f2.txt  f.txt
+CompletedProcess(args='ls', returncode=0)
+>>> 
+
+>>> subprocess.run(['ls','/home'])
+plj
+CompletedProcess(args=['ls', '/home'], returncode=0)
+>>> 
+
+	
+>>> subprocess.run(['ls','/home'])
+plj
+CompletedProcess(args=['ls', '/home'], returncode=0)
+>>> 
+>>> subprocess.run(['ls','/home'],shell=True)
+anaconda-ks.cfg  a.txt  b.txt  d.txt  e.txt  f2.txt  f.txt
+CompletedProcess(args=['ls', '/home'], returncode=0)
+>>> 
+>>> subprocess.run('ls /home',shell=True)
+plj
+CompletedProcess(args='ls /home', returncode=0)
+>>> 
+
+
+>>> subprocess.run('ls /home',shell=True)
+plj
+CompletedProcess(args='ls /home', returncode=0)
+>>> 
+>>> 
+>>> subprocess.run(['ls','/home'])
+plj
+CompletedProcess(args=['ls', '/home'], returncode=0)
+>>> 
+>>> x=subprocess.run(['ls','/home'])
+plj
+>>> x.args
+['ls', '/home']
+>>> x.returncode
+0
+>>> 
+
+
+>>> subprocess.run(['ls','/home'],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+CompletedProcess(args=['ls', '/home'], returncode=0, stdout=b'plj\n', stderr=b'')
+>>> 
+>>> 
+>>> x = subprocess.run(['ls','/home'],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+>>> x.stdout
+b'plj\n'
+>>> 
+>>> x.stderr
+b''
+>>> print(x.stdout.decode())
+plj
+
+>>> 
+
+例子2
+>>> import subprocess
+>>> subprocess.run('ls /home',shell=True)
+bob  danei  jing  messages  tom  yaya
+CompletedProcess(args='ls /home', returncode=0)
+>>> 
+>>> print(x.stderr.decode())
+
+>>> x=subprocess.run('ls /homea',shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+>>> 
+>>> print(x.stderr)
+b"ls: \xe6\x97\xa0\xe6\xb3\x95\xe8\xae\xbf\xe9\x97\xae'/homea': \xe6\xb2\xa1\xe6\x9c\x89\xe9\x82\xa3\xe4\xb8\xaa\xe6\x96\x87\xe4\xbb\xb6\xe6\x88\x96\xe7\x9b\xae\xe5\xbd\x95\n"
+>>> 
+>>> print(x.stderr.decode())
+ls: 无法访问'/homea': 没有那个文件或目录
+
+>>> print(x.args)
+ls /homea
+>>> print(x.returncode)
+2
+>>> 
+
+
+
+		
+	1.3 内建函数
+
+>>> L = ['a',"f",3.14,True,99]
+>>> len(L)
+5
+>>> 
+
+>>> L3 = ["春","夏","秋","冬"]
+>>> enumerate(L3)
+<enumerate object at 0x7fcf694e0d38>
+>>> 
+>>> for i,j in enumerate(L3):
+...     print(i,j)
+...        休息到 11：25 
+0 春 
+1 夏
+2 秋
+3 冬
+
+>>> L2=[1,3,5,7,9]
+>>> L2.reverse()
+>>> print(L2)
+[9, 7, 5, 3, 1]
+>>> 
+
+
+>>> L4 = [34,29,58,63]
+>>> sorted(L4)
+[29, 34, 58, 63]
+>>> sorted(L4,reverse=True)
+[63, 58, 34, 29]
+>>> 
+
+
+二、字符串详解
+	2.1
+
+	2.2 格式化输出 ： 让输出的数据有样式 
+
+name="TOM"
+age=28
+weight=46.5
+stu_num=1
+
+
+没有使用格式化字符的输出
+print("我是:", name , "年龄:" ,age,"岁" , "体重:",weight,"公斤" , "学号:" , tu_num)
+
+
+
+
+%s   匹配字符
+>>> name="TOM"
+>>> age=28
+>>> weight=46.5
+>>> stu_num=1
+>>> 
+>>> print("我叫%s" %name)
+我叫TOM
+>>> print("我叫%s" %'庞丽静')
+我叫庞丽静
+>>> print("我叫%s来自%s"%("静丫丫","达内"))
+我叫静丫丫来自达内
+>>> 
+>>> name="jingyaya"
+>>> work="达内"
+>>> print("我叫%s来自%s" %(name,work) )
+我叫jingyaya来自达内
+>>>
+
+%d  匹配整数 
+>>> name="TOM"
+>>> age=28
+>>> weight=46.5
+>>> stu_num=1
+
+
+>>> print('我的体重是%d公斤' %weight)
+我的体重是46公斤
+>>> 
+>>> L1 = [ 2, 29 , 111 , 69081]
+>>> for i  in  L1:
+...     print('数字%05d' %i)
+... 
+数字00002
+数字00029
+数字00111
+数字69081
+>>> 
+
+
+%f  匹配小数 默认保留6为小数位
+
+>>> print('我的体重是%f公斤' %weight)
+我的体重是46.500000公斤
+>>> 
+
+>>> print('我的体重是%.2f公斤' %weight)
+我的体重是46.50公斤
+>>>
+
+
+>>> age = 19
+>>> name = 'bob'
+
+>>> print('我叫%s 几年%d岁' %(name,age))
+我叫bob 几年19岁
+
+>>> print('我叫%s今年%d岁,明年%d岁'  %(name,age,age+1))
+我叫bob今年19岁,明年20岁
+>>> 
+
+
+>>> print("我叫%s 工资是%.2f 年龄是%03d" %('大锤', 20000.8 , 56) ) 
+我叫大锤 工资是20000.80 年龄是056
+>>> 
+
+>>> name='大锤'
+>>> pay=20000.8
+>>> age=56
+
+>>> print(f"我叫{name}工资{pay}年龄{age}")
+我叫大锤工资20000.8年龄56
+>>> 
+
+
+
+>>> "+++%d+++" % 999    # 返回 '+++999+++'
+'+++999+++'
+>>> "+++%s+++" % 3.14
+'+++3.14+++'
+>>> "+++%s+++" % "plj"
+'+++plj+++'
+>>> "+++%d+++" % 3.1415
+'+++3+++'
+>>> "+++%d+++" % 13
+'+++13+++'
+>>> "+++%o+++" % 13
+'+++15+++'
+>>> "+++%x+++" % 13
+'+++d+++'
+>>> "+++%e+++" % 3.1415
+'+++3.141500e+00+++'
+>>> "+++%f+++" % 3.1415
+'+++3.141500+++'
+>>> "+++%g+++" % 3.1415
+'+++3.1415+++'
+>>> "+++%g+++" % 3141523274812374281342374324.23748123742183472
+'+++3.14152e+27+++'
+
+- 左对齐  （ 默认右对齐）
+>>> L1 = [2 , 56 , 777 , 9987 ]
+>>> for i  in L1:
+...     print("+++%-5d+++" %i)
+... 
++++2    +++
++++56   +++
++++777  +++
++++9987 +++
+>>> 
+>>> for i  in L1:
+...     print("+++%5d+++" %i)
+... 
++++    2+++
++++   56+++
++++  777+++
++++ 9987+++
+
+
+
++ 显示正号
+
+>>> "--%5d--" % 99
+'--   99--'
+>>> "--%+5d--" % 99
+'--  +99--'
+
+>>> L1 = [2 , 56 , 777 , 9987 ]
+>>> 
+>>> for i  in L1:
+...     print("xxx%dxxx" %i)
+... 
+xxx2xxx
+xxx56xxx
+xxx777xxx
+xxx9987xxx
+>>> 
+>>> for i  in L1:
+...     print("xxx%+dxxx" %i)
+... 
+xxx+2xxx
+xxx+56xxx
+xxx+777xxx
+xxx+9987xxx
+>>> 
+>>> 
+>>> for i  in L1:
+...     print("xxx%+5dxxx" %i)
+... 
+xxx   +2xxx
+xxx  +56xxx
+xxx +777xxx
+xxx+9987xxx
+>>> 
+
+
+0 左侧空白位置补零
+>>> L1 = [2 , 56 , 777 , 9987 ]
+>>> for i  in L1:
+...     print("xxx%05dxxx" %i)
+... 
+xxx00002xxx
+xxx00056xxx
+xxx00777xxx
+xxx09987xxx
+>>> 
+
+
+
+精度: 保留小数点以后多少位(默认小数点以后保留6位)
+			设置总位数 及小数位位数  不够位数时用0补位
+			
+>>> "--%f--" %3.1415926
+'--3.141593--'
+>>> 
+>>> "--%7.2f--" %3.1415926
+'--   3.14--'
+>>> 
+>>> "--%07.2f--" %3.1415926
+'--0003.14--'
+>>> 
+>>> "--%07.2f--" %23.668
+'--0023.67--'
+>>> 
+
+
+format(值列表)  使用format 函数 
+
+>>> 'my name is {},age {}'.format("tom",21)
+'my name is tom,age 21'
+>>> 
+>>> 'my name is {},age {}'.format("jerry",29)
+'my name is jerry,age 29'
+>>> 
+
+
+format() 函数的使用 ，通过关键字赋值
+
+>>> 'my name is {x},age is {y}'.format(x=19,y='tom')
+'my name is 19,age is tom'
+>>> 
+>>> 'my name is {name},age is {age}'.format(name='tom',age=19)
+'my name is tom,age is 19'
+>>>
+
+format() 函数的使用， 通过列表方式赋值
+>>> 'name is {0[0]} age is {0[1]}'.format(['大锤',19])
+'name is 大锤 age is 19'
+>>> 
+
+
+练习
+写一个程序:
+	输入一个字符串
+	输入一个浮点数
+	输入一个整数
+	输出: 全为10个字节宽度的字符串如下：
+如:
+   请输入字符串: panglj
+   请输入浮点数: 3.14
+   请输入整数:   99
+打印如下:
+   +----------------+
+   | panglj              | 
+   |                   3.14|
+   | 0000000099 |
+   +----------------+
+
+str = input('请输入字符串：')
+flt = float(input('请输入浮点数: '))
+num = int(input('请输入整数：'))
+
+print(str,flt,num)
+
+print("+----------+")
+print("|%-10s|" %str)
+print("|%10.2f|" %flt)
+print("|%010d|" %num)
+print("+----------+")
+
+
+###########换种写法#############
+
+fmt = '''
++----------+
+|%-10s|
+|%10.2f|
+|%010d|
++----------+
+'''
+
+result = fmt % (str, flt, num)
+print(result)
