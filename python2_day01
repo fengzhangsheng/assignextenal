@@ -1,0 +1,108 @@
+
+
+
+############################################
+三、文件系统相关模块  之  OS模块 
+
+>>> import  os
+>>> os.getcwd()  # 返回当前的工作路径，pwd
+'/root/桌面/py02/day03_code'
+
+>>> os.mkdir('/tmp/nsd2012')   # mkdir /tmp/nsd2012
+
+>>> os.makedirs('/tmp/nsd2012/a/b/c')  # mkdir -p /tmp/nsd2012/a/b/c
+
+>>> os.listdir()  # ls
+['mygames.py', '.idea', 'mynote.txt', 'python.log', 'mynote2.txt', '03_file_seek.py', '04_myprog.py', '05_cp.py', '01_read_text_file_by_string.py', '02_read_text_file_by_bytes.py']
+
+
+>>> os.listdir('/tmp')  # ls /tmp  # 列出所有的文件夹
+[ 'nsd2012', 'dir1', 'dir2']
+
+>>> os.chdir('/tmp/nsd2012')  # cd  /tmp/nsd2012
+
+>>> os.getcwd()   # pwd
+'/tmp/nsd2012'
+
+>>> os.symlink('/etc/passwd', '/tmp/abc')  # ln -s /etc/passwd /tmp/abc
+>>> os.mknod('/tmp/myfile.txt')    # touch /tmp/myfile.txt
+
+>>> os.chmod('/tmp/myfile.txt', 0o755)  # chmod 755 /tmp/myfile.txt
+
+>>> os.rename('/tmp/myfile.txt', '/tmp/a.txt')  # mv /tmp/myfile.txt /tmp/a.txt
+>>> os.rmdir('/tmp/dir2')   # rmdir /tmp/dir2
+>>> os.remove('/tmp/a.txt')  # rm /tmp/a.txt
+
+
+四  OS模块扩展 之  OS.path 模块
+
+>>> import  os
+>>> os.path.isabs('/root/abc.txt')   # 判断是否为绝对路径
+True
+>>> os.path.isdir('/tmp/nsd2012')    # 判断是否是文件夹
+True
+>>> os.mknod('/tmp/b.txt')   # touch /tmp/b.txt
+>>> os.path.isfile('/tmp/b.txt')     # 判断是否是文件
+True
+>>> os.path.islink('/tmp/abc')      # 判断是否是软连接？
+True
+>>> os.path.ismount('/home')       # 存在并且是挂载点
+True
+
+>>> os.path.exists('/root')       # 判断文件或文件夹是否存在
+True
+>>> os.path.basename('/tmp/nsd2012/hello.py')  # 返回文件名
+'hello.py'
+>>> os.path.dirname('/tmp/nsd2012/hello.py')  # 返回路径
+'/tmp/nsd2012'
+
+>>> os.path.split('/tmp/nsd2012/hello.py')  # 拆分 路径和文件名
+('/tmp/nsd2012', 'hello.py')
+
+>>> os.path.join('/tmp/nsd2012', 'world.py')  # 拼接路径
+'/tmp/nsd2012/world.py'
+
+os.walk() 函数 遍历文件夹   （系统命令tree）
+
+>>> for x in os.walk('/tmp/nsd2012'):
+...    print(x)
+... 
+#  (路径 , 路径内的所有文件夹列表 , 路径内的所有文件列表)
+('/tmp/nsd2012', ['a', 'aa'], [])
+('/tmp/nsd2012/a', ['b'], ['aaa.txt'])
+('/tmp/nsd2012/a/b', ['c'], ['bbb.txt'])
+('/tmp/nsd2012/a/b/c', [], [])
+('/tmp/nsd2012/aa', ['bb'], [])
+('/tmp/nsd2012/aa/bb', ['cc'], [])
+('/tmp/nsd2012/aa/bb/cc', [], [])
+
+os 
+
+三、文件系统相关模块  之  pickle 模块 
+打开文件 的函数  与 open()  等效的  file() 函数     
+dump(数据,文件名)  存储数据到文件里
+
+load()    把文件里的数据读取出来
+
+>>> import pickle as p
+>>> f_name = "/code/f2.txt"
+>>> 
+>>> f = open(f_name,'wb')
+>>> 
+>>> L = [ "A" ,"M" , "C" ,"O" ]
+>>> 
+>>> p.dump(L,f)
+>>> f.close()
+>>> import subprocess
+>>> subprocess.run('ls /code/f2.txt' , shell=True)
+/code/f2.txt
+CompletedProcess(args='ls /code/f2.txt', returncode=0)
+>>>
+>>> f_name
+'/code/f2.txt'
+>>> 
+>>> f = open(f_name,'rb')
+>>> data = p.load(f)
+>>> print(data)
+['A', 'M', 'C', 'O']
+>>> 
