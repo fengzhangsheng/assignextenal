@@ -387,3 +387,146 @@ fmt = '''
 
 result = fmt % (str, flt, num)
 print(result)
+
+
+############################################
+一系统模块
+	1.1 shutil模块  提供对文件做拷贝  移动  删除  等操作
+		
+	copyfileobj() 需要自己打开文件
+   格式  shutil.copyfileobj(f1,f2)	
+														(源文件，目标文件)
+														注意目标文件要以w 方式打开
+														源文件的内容和属性会被同时复制
+>>> import shutil
+>>> f1 = open('/etc/passwd','rt')
+>>> f2 = open('/root/a.txt','wt')
+>>> import shutil
+>>> shutil.copyfileobj(f1,f2)
+>>> f1.close()
+>>> f2.close()   #关闭打开的文件后 复制才算完成
+
+[root@localhost ~]# wc -l a.txt 
+23 a.txt
+[root@localhost ~]# wc -l /etc/passwd
+23 /etc/passwd
+[root@localhost ~]#
+
+     copyfile(src ，dst )
+	 
+	copyfile(src,dst)  与copyfileobj功能一样  只是不需要自己打开文件
+>>> shutil.copyfile('/etc/passwd','/root/b.txt')
+'/root/b.txt'
+>>>
+
+[root@localhost ~]# wc -l  /root/b.txt 
+23 /root/b.txt
+[root@localhost ~]# 
+
+
+	copymode(src,dst) 复制文件权限 不更改文件内容 组 和用户 （复制文件的权限）
+	注意:dst 必须要存在
+[root@teacher code]# ls a2.txt 
+a2.txt
+[root@teacher code]# ls -l a2.txt 
+-rw-r--r-- 1 root root 183 6月  22 09:14 a2.txt
+[root@teacher code]# chmod 000 a2.txt
+[root@teacher code]# echo "abc" > a2.txt
+[root@teacher code]# cat a2.txt 
+abc
+[root@teacher code]# ls -l a2.txt 
+---------- 1 root root 4 6月  22 09:28 a2.txt
+[root@teacher code]# ls -l a.txt 
+-rw-r--r-- 1 root root 183 6月  22 09:11 a.txt
+[root@teacher code]# useradd yzs
+[root@teacher code]# chown yzs:yzs a2.txt
+[root@teacher code]# ls -l a2.txt 
+---------- 1 yzs yzs 4 6月  22 09:28 a2.txt
+[root@teacher code]# 
+[root@teacher code]# ls a.txt -l
+-rw-r--r-- 1 root root 183 6月  22 09:11 a.txt
+[root@teacher code]#
+
+>>> shutil.copymode("/code/a.txt" , "/code/a2.txt")
+
+
+[root@teacher code]# cat /code/a2.txt 
+abc
+[root@teacher code]# 
+[root@teacher code]# ls -l /code/a2.txt 
+-rw-r--r-- 1 yzs yzs 4 6月  22 09:28 /code/a2.txt
+[root@teacher code]# copymode
+
+
+	copystat(src,dst) 
+	将权限位，最后访问时间，上次修改时间和标志从src复制到dst。
+[root@teacher code]# ls -l /etc/shadow
+---------- 1 root root 1505 6月  22 09:28 /etc/shadow
+[root@teacher code]# 
+
+[root@teacher code]# ls -l /code/a2.txt 
+-rw-r--r-- 1 yzs yzs 4 6月  22 09:28 /code/a2.txt
+[root@teacher code]#
+
+>>> shutil.copystat("/etc/shadow" , "/code/a2.txt")
+
+[root@teacher code]# cat /code/a2.txt 
+abc
+[root@teacher code]# 
+[root@teacher code]# ls -l /code/a2.txt 
+---------- 1 yzs yzs 4 6月  22 09:28 /code/a2.txt
+[root@teacher code]#
+
+
+	copy(src,dst) 复制文件的内容及权限
+>>> shutil.copy('/etc/shadow','/root/e.txt')
+'/root/e.txt'
+>>> 
+
+        copy2(src,dst)复制文件的内容及文件的所有状态信息
+>>> shutil.copy2('/etc/hosts','/root/f2.txt')
+'/root/f2.txt'
+>>> 
+
+	copytree(src,dst)递归复制（包括文件的状态信息）就是复制目录
+	目标不能有同名目录
+[root@localhost ~]# mkdir -p /a/b/c
+
+>>> shutil.copytree('/a','/a1')
+'/a1'
+>>>
+
+]# ls /a1
+	
+	rmtree(目录或文件)  递归删除
+>>> shutil.rmtree('/a')
+
+休息到 10：05  
+
+	move(src,dst)  移动
+>>> shutil.move('/code/a2.txt' , '/root/a22.txt')
+'/root/a22.txt'
+>>> 
+
+
+[root@localhost ~]# mkdir -p /c1/c2/c3
+>>> shutil.move('/c1','/opt/')
+'/opt/c1'
+>>> 
+
+
+
+[root@teacher code]# id yzs
+uid=1005(yzs) gid=1005(yzs) 组=1005(yzs)
+[root@teacher code]# ls /code/a.txt
+/code/a.txt
+[root@teacher code]# ls /code/a.txt -l
+-rw-r--r-- 1 root root 183 6月  22 09:11 /code/a.txt
+[root@teacher code]# 
+>>> shutil.chown('/code/a.txt' ,"yzs","yzs")
+
+[root@teacher code]# ls /code/a.txt -l
+-rw-r--r-- 1 yzs yzs 183 6月  22 09:11 /code/a.txt
+[root@teacher code]# 
+
+
