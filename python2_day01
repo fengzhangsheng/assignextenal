@@ -1,5 +1,170 @@
 
 
+二 异常处理
+		什么是异常？
+		
+
+处理异常的基本格式
+try:
+	 有可能出现异常的错误代码
+except :
+	  有异常时要执行的代码
+
+处理异常的格式2
+try:
+	 有可能出现异常的错误代码
+except   指定异常的类型:
+	  有异常时要执行的代码
+
+try:
+        #gender="女"
+        print(gender)
+        print("hahaha ")
+
+except NameError as x:
+
+        print(x)
+
+print("okokok")
+
+
+
+处理异常的格式3  （捕获多种异常 ，捕获到就执行）
+try:
+	 有可能出现异常的错误代码
+
+except   指定异常的类型 as  变量名:
+	  有异常时要执行的代码
+	  
+except   指定异常的类型  as  变量名:
+		有异常时要执行的代码
+
+try:
+        #gender="女"
+        #print(gender)
+        print("hahaha ")
+        L=list("abc")
+        print(L[3])
+
+except NameError as x:
+        print(x)
+
+except IndexError as y:
+        print(y)
+
+print("okokok")
+
+
+处理异常的格式4  （一起捕获多种异常 ，捕获到某一个就执行）
+try:
+	 有可能出现异常的错误代码
+
+except   (错误名1,错误名2,.....)  as   变量名 :
+	  有异常时要执行的代码
+	  
+try:
+        #gender="女"
+        print(gender)
+        print("hahaha ")
+        L=list("abc")
+        print(L[3])
+
+except (NameError,IndexError) as error:
+        print("程序有错误请检查",error)
+
+
+print("okokok")
+	
+	
+使用内置的错误信息类  匹配所有的报错类型
+try:
+	 有可能出现异常的错误代码
+
+except   Exception  as   变量名 :
+	  有异常时要执行的代码
+
+try:
+        #foo()
+        #print(gender)
+        #print("hahaha ")
+        L=list("abc")
+        print(L[3])
+except  Exception   as   error:
+        print(error)
+
+print("okokok")
+
+处理异常的格式5  带else
+
+try:
+	 有可能出现异常的错误代码
+
+except   Exception  as   变量名 :
+	  有异常时要执行的代码
+else:
+	  没有异常输出时，执行的代码
+	  
+try:
+        #foo()
+        #print(gender)
+        #print("hahaha ")
+        L=list("abc")
+        #print(L[3])
+        print(L[1])
+except Exception as error:
+        print(error)
+else:
+        print("程序没有任何报错")
+
+print("okokok")
+
+
+处理异常的格式6  带finally     无条件执行finally下的代码
+
+
+try:
+	 有可能出现异常的错误代码
+
+except   Exception  as   变量名 :
+	  有异常时要执行的代码
+else:
+	  没有异常输出时，执行的代码
+finally：
+		必须执行的代码
+	
+try:
+        #foo()
+        #print(gender)
+        #print("hahaha ")
+        L=list("abc")
+        #print(L[1])
+        print(L[3])
+except Exception as error:
+        print(error)
+else:
+        print("程序没有任何报错")
+finally:
+        print("code over")
+
+print("okokok")	
+
+
+
+raise  程序员自己定义 错误类型 和 错误信息
+		raise   错误类型(错误信息)
+def set_age(name,age):
+        if not 0 < age < 120:
+                raise ValueError("age out of range.")
+        print("%s is %s years old" % (name, age))
+
+if __name__ == '__main__':
+        try:
+                set_age('bob', 25)
+        except ValueError:
+                print("重新执行脚本输入正确的数值")
+        else:
+                print("输入信息正确脚本执行完毕")
+
 
 ############################################
 三、文件系统相关模块  之  OS模块 
