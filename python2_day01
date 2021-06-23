@@ -1,4 +1,186 @@
 
+ 时间模块    ***
+  Python 语言的 time 模块  ：  提供获取操作系统时间的相关命令
+  
+  时间的表示方式：
+	1 时间戳   从1970.1.1  0.0.0  到当前时间点经历的秒数
+	
+	2  UTC   世界协调时间   以英国格林威治这个城市所在的经度点为0时时区 向东或向
+	西每15度为1个时区  公分为24个时区  中国在东8区
+  
+（struct_time）9元组时间  ，
+				时间信息包括9部分（年 月 日  小时  分钟  秒  周   1年中的第几天  夏令时  ）
+]# python 3
+>>> import time  导入模块
+>>> help(time)  查看帮助信息
+
+>>> time.time()
+1624412201.7926717     时间戳  时间 
+>>> 
+
+>>> time.ctime()
+'Wed Jun 23 09:37:54 2021'   UTC  时间
+>>>
+   
+  >>> time.localtime()    9元组时间
+time.struct_time(tm_year=2021, tm_mon=6, tm_mday=23, tm_hour=9, tm_min=39, tm_sec=0, tm_wday=2, tm_yday=174, tm_isdst=0)
+>>>
+  
+ >>> t = time.localtime()   通过9元组元素对应的名称 获取指定值 
+ >>> t.tm_year   
+2021
+>>> t.tm_mon
+6
+>>> t.tm_mday
+23
+>>>
+
+>>> time.mktime(t)  把9元组时间转换回 时间戳时间
+1624412438.0
+>>>
+
+>>> time.time()
+1624412700.8895845
+>>> 
+>>> 
+>>> time.gmtime(time.time())  把时间戳转换成9元组时间
+time.struct_time(tm_year=2021, tm_mon=6, tm_mday=23, tm_hour=1, tm_min=45, tm_sec=24, tm_wday=2, tm_yday=174, tm_isdst=0)
+>>> 
+
+>>> time.sleep(3)    等待指定的秒数后再执行其他操作
+>>> for i  in  range(1,11):
+...     print(i)
+...     time.sleep(2)
+
+>>> t
+time.struct_time(tm_year=2021, tm_mon=6, tm_mday=23, tm_hour=9, tm_min=40, tm_sec=38, tm_wday=2, tm_yday=174, tm_isdst=0)
+
+>>> time.asctime(t)   把9元组数据转换成utc时间
+'Wed Jun 23 09:40:38 2021'
+>>> 
+
+>>> time.ctime()  获取系统的utc数据
+'Wed Jun 23 10:07:48 2021'
+>>> 
+
+# 把获取到的9元组时间格式化输出
+>>> time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
+'2021-06-23 10:15:01'
+
+>>> time.strftime('%Y-%m-%d %X',time.localtime())
+'2021-06-23 10:15:16'
+>>> 
+
+把个数时间转换为9元组时间
+>>> time.strptime('20211001 09:50:28','%Y%m%d  %H:%M:%S')
+time.struct_time(tm_year=2021, tm_mon=10, tm_mday=1, tm_hour=9, tm_min=50, tm_sec=28, tm_wday=4, tm_yday=274, tm_isdst=-1)
+>>>
+
+
+datetime模块 提供获取时间相关方法
+>>> import  datetime    导入datetime模块
+#获取系统utc时间
+>>> datetime.datetime.today()
+>>> datetime.datetime.now()
+
+
+>>> from datetime import datetime    仅仅把datetime模块下的datetime功能导入
+>>> datetime.today()
+datetime.datetime(2021, 6, 23, 10, 27, 46, 932321)
+>>> 
+>>> datetime.now()
+datetime.datetime(2021, 6, 23, 10, 28, 12, 486391)
+>>> 
+
+>>> datetime.now()   #获取系统现在时间
+datetime.datetime(2021, 6, 23, 10, 34, 45, 405801)
+>>> 
+>>> t=datetime.now()  把获取系统现在时间存放到变量t 里
+
+>>> datetime.ctime(t)     转换成UTC时间
+'Wed Jun 23 10:34:53 2021'
+>>>
+
+>>> datetime.now()    
+datetime.datetime(2021, 6, 23, 10, 38, 32, 170252)
+>>> t=datetime.now()
+>>> t.year
+2021
+>>> t.month
+6
+>>> t.day
+23
+>>> t.hour
+10
+>>> t.strftime('%Y')    #格式化输出时间
+'2021'
+>>> t.strftime('%Y/%m/%d')
+'2021/06/23'
+>>> t.strftime('%Y-%m-%d')
+'2021-06-23'
+>>> t.strftime('%Y-%m-%d %X')
+'2021-06-23 10:38:41'
+>>> 
+
+时间计算函数  timedelta
+>>> dt=datetime.now()
+>>> dt
+datetime.datetime(2021, 6, 23, 10, 58, 50, 518079)
+>>> 
+>>> x=timedelta(days=-2)
+>>> x
+datetime.timedelta(-2)
+>>> dt + x
+datetime.datetime(2021, 6, 21, 10, 58, 50, 518079)
+>>> 
+
+编写脚本 
+把当前系统的时间输出
+
+再输出昨天对应的时间
+
+再输出明天对应的时间
+
+[root@teacher ~]# cat sj.py 
+import time , datetime
+t1 =  datetime.datetime.now()
+t2 = t1.strftime('%Y-%m-%d %X')
+print("当前时间是",t2)
+days1 = datetime.timedelta(days=1)
+days2 = datetime.timedelta(days=-1)
+t0 =  t1 + days2   #昨天
+t4 =  t1 + days1   #明天
+print("昨天对应的时间",t0)
+print("明天对应的时间",t4)
+[root@teacher ~]# python3 sj.py 
+当前时间是 2021-06-23 11:37:31
+昨天对应的时间 2021-06-22 11:37:31.410444
+明天对应的时间 2021-06-24 11:37:31.410444
+[root@teacher ~]# 
+
+
+
+计算电脑 输出数字 1  - 20000000  之间的数据需要多长时间
+
+[root@teacher ~]# cat sj2.py 
+import time
+begin=time.time()
+print("请等待程序正在执行....")
+x = 1 
+while x  <= 20000000:
+    x+=1
+print("程序执行结束")
+end=time.time()
+
+print(begin)
+print(end)
+[root@teacher ~]# python3 sj2.py 
+请等待程序正在执行....
+程序执行结束
+1624420107.9776397
+1624420109.6811178
+[root@teacher ~]# 
+
 
 二 异常处理
 		什么是异常？
