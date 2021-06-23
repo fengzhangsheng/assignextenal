@@ -1,0 +1,202 @@
+ python2_day02  ***
+  1 函数基础  （不是新知识，对函数使用的回顾）
+		1.1 函数的定义 及 优点？
+				把实现一定功能的代码封装在一起  定义个名称  可以重复使用。
+
+		1.2  定义 
+				def   函数名(形参列表):
+							函数体
+						
+						
+		
+		1.3  调用函数
+				 函数名(实参列表):
+  
+  
+		1.4 函数的使用规则？ 
+		函数之间可以互相调用
+		要先定义后调用
+        调用函数是一定要加()
+		
+#函数之间可以互相调用，但要先定义后调用
+def  foo():
+    print("this is function foo")
+    bar() #没有定义过名称叫bar()函数
+	
+def bar():
+    print("this is function bar()")
+    
+foo()  #调用 函数foo()   再调用函数之前把bar() 定义好 
+		
+
+		
+				
+  2 函数高级应用
+		2.1 给函数传参，
+				方式1   位置传参：参数的个数和位置必须与定义时一致
+def  sayinfo(name,age):
+        #print(f"我的名字叫{name}年龄{age}岁")
+        print("我的名字叫%s年龄%d岁"%(name,age))
+ 		 
+#sayinfo() #错误
+#sayinfo("bob") #错误
+sayinfo("bob",19)  #正确
+sayinfo("tom",21)  #正确
+sayinfo(21,"jerry")  #不符合常规习惯
+						
+						方式2 关键字传参 与位置无关 ，但与个数要一致
+					
+		参数组 传参：函数的形参个数不固定（形参个数可能是0个也可能是
+		多个时候使用）
+		使用元组接收   *args  
+		
+#def sayinfo(*args):
+#       print("变量args值是", args)
+#       print("#" *  20)
+#sayinfo()  #没有传参 空元组
+#sayinfo(9)  #传了1个参数 元组有一个元素
+#sayinfo(7,3,"a")  #传了3个参数 元组有3个元素
+#sayinfo("a",1,5,7,) #传了4个参数 元组有4个元素
+
+#############
+
+#编写函数very_sum() 
+#计算任意个数相加的和
+def  very_sum(*x):
+        s = 0 #定义变量存储累加的和
+        i = 0 #定义循环的初始值
+        while  i < len(x):
+                s += x[i]
+                i += 1
+        print(s)
+#very_sum()
+very_sum(2)
+very_sum(3,9)
+very_sum(5,9,12,23)
+
+			
+				
+		使用字典接收**kwargs
+#def sayinfo(name,age,gender):
+#       print("名字%s年龄%d性别%s" %(name,age,gender))
+#sayinfo(name="bob",age=19)
+
+def  sayinfo(**kwargs):
+        print(kwargs)
+
+sayinfo()
+sayinfo(gender="女")
+sayinfo(x=1,name="bob",school="tarena")
+
+
+综合应用
+[root@teacher code]# cat hs5.py
+def sayinfo(x,y,*args,school="tarena",**kwargs):
+        print(x,y,school)
+        print(args)
+        print(kwargs)
+        print("*" * 20)
+#没有对应形参的数据都会被后边的 元组变量 或字典变量接收
+sayinfo(9,8,"a","f","bob",school="beijing",name="yaya",classname="nsd2103")
+
+#没有传参 元组变量 或字典变量就没有元素 创建的是空元组和空字典
+sayinfo(9,8)
+
+[root@teacher code]# 
+
+执行输出
+[root@teacher code]# python3 hs5.py 
+9 8 beijing
+('a', 'f', 'bob')
+{'name': 'yaya', 'classname': 'nsd2103'}
+********************
+9 8 tarena
+()
+{}
+********************
+[root@teacher code]# 
+
+
+lambda  关键字   :  创建匿名函数
+					功能是化简代码 创建没有名字的函数
+					格式：
+					变量名 = lambda  参数列表:函数功能体
+
+def bdx(x , y):
+        if x > y:
+                print(f"数字{x}大于数字{y}")
+        else:
+                print(f"数字{y}大于数字{x}")
+#bdx(100,99)
+#bdx(63,50)
+
+#lambda创建匿名函数的格式  lambda  参数列表: 函数体 
+DX = lambda x,y:print(f"{x} > {y}" ) if x > y else print( f"{y} > {x}")
+
+DX(10,9)
+DX(11,19)
+
+
+####################
+#不加（）是对函数的引用  相当于 把代码复值给了对方
+def bdx(x , y):
+        if x > y:
+                print(f"数字{x}大于数字{y}")
+        else:
+                print(f"数字{y}大于数字{x}")
+#bdx(99,68)
+print(bdx)
+
+x=bdx    #不加（）是对函数的引用  相当于 把代码复值给了对方
+print(x)
+
+print("+" * 10)
+x(99,68)
+
+		2.2 变量的作用域  ，在脚本里定义函数的时候，变量分为全局变量和
+			  局部变量2种。
+			  
+			  全局变量: 在所有函数的上方定义的变量 ， 是脚本列定义的所有函数
+			  都可以使用的变量。
+			  
+			  局部变量：在每个函数体内部定义的变量，只能函数自己使用，
+			  只在函数执行过程中有效。
+
+global 关键字  在函数体内调用全局变量
+		  
+name = "jerry"
+age = 19
+def  a():
+    #name="bob"
+    global name , age
+    name="bob"
+    age = 21
+    print("fun a  name values:", name,age)
+def b():
+    print("fun b  name values:", name,age)
+def c():
+    print("fun c  name values:", name)
+a()
+print("+++++")
+b()
+print("+++++")
+c()
+
+
+在脚本里写一个函数 tj  执行脚本时能够输出函数被执行的次数
+vim test.py
+num = 0
+def  tj(name):
+    print("你输入的名字是",name)
+    global num
+    num += 1
+tj("bob")
+tj("tom")
+tj("plj")
+print("函数tj 被执行了%d 次"%num)
+[root@teacher code]# python3 test.py
+你输入的名字是 bob
+你输入的名字是 tom
+你输入的名字是 plj
+函数tj 被执行了3 次
+[root@teacher code]# 
