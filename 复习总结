@@ -1,0 +1,86 @@
+1 python 介绍      
+2 数据类型   字符  数值  bool  列表 元组 字典    集合  None
+			容器类型 （可以存储多个数据，并且多个数据的类型可以各不相同）
+						列表list            创建空列表的函数 list()
+						元组tuple       创建空元组的函数  tuple()
+						字典					创建空字典的函数  dict()
+						集合                   可变set()     不可变frozenset()
+						
+3 变量  
+	x=  99 
+	x = 2 + 3
+    x =  3> 5
+	a,b=10,20
+	i,j,k=33
+	
+	
+4 算术运算符号  +  - *  /  %    **   //
+								+= -= *= /=  %=   **=  //=
+5  比较符号
+					数值比较  字符比较  逻辑比较     
+					在容器类型类查找数据 in      not in
+					"a"  in  [  ]
+					"a"  in  ()      a  in   {"age":"99"}  
+   					a   in  {1,2,3,4,5}
+ 
+ 6 if判断语句
+if  条件判断：
+		条件成立执行的代码
+		
+		
+if  条件判断：
+		条件成立执行的代码
+else:
+		条件不成立时执行的代码
+		
+
+if  条件判断：
+		条件成立执行的代码
+elif 条件判断2 ：
+			条件判断2立时执行的代码	
+elif 条件判断3：
+	        条件判断3立时执行的代码
+else:
+		所有条件都不成立时执行的代码		
+		
+7 循环结构
+
+for   变量   in    可迭代对象：
+			可迭代对象有数据赋值给变量 执行代码
+			
+while  条件:
+				要重复执行的代码
+	
+break  语句结束循环的执行 
+continue  语句结束本次循环，并开始下一次循环
+8 函数管理
+9 文件管理
+		文件访问步骤：
+					1  打开文件 open("文件名","打开方式") 
+																		  rt   wt      at 
+																		  r+  w+  a+
+					指针 ：打开文件后  光标所在的位置
+					打开文件方式不同 光标所在的位置 是tell()  显示 
+					f = open("/etc/passwd","wt")
+					f.tell()
+					
+					2  读写数据
+						读：查看文件的内容
+						f.read()  
+						f.readline()
+						f.readlines()
+						写：把数据存储到文件里
+						f.write("数据")
+						f.writes([值列表])
+						
+				3  关闭文件
+					f.close()
+					f.closed   返回True 表示文件关闭了 
+					
+				4  with   open("/etc/passwd","rt") as 	obj:
+							
+					
+						
+10 模块管理    shutil   subprocess   os   sys   pickle 
+11 异常处理    assert    raise 
+12 时间模块  time    datetime     UTC     9元组  夏令时 
