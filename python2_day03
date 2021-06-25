@@ -1,10 +1,69 @@
-正则符号回顾使用的文件 
+正则表达式  你是怎么理解的 ？ 
+	描述数据共性特征的式子 
+	表达式由 固定符号组成
+    每种符号表示了固定意义
 
-[root@teacher ~]# cat /code/re.txt 
+正则表达式的作用： 在数据里过滤与表达式匹配的数据
+
+正则符号 回顾 
+[root@teacher ~]# cat  /code/re.txt 
 tam tbm tcm txm txym tom tomorrow t
-t0m t1m t2m t8m t10m
-t m t_m t*m t$m  t-m t@m
+666888999
+t0m t1m t2m T8m t10m
+t m t_m t*m t$M  t-m t@m
 tabm tababm tabababm  tababababm 
 tm ttm tttm tttttm ttttttm
+gd gad gacacd gacacacd gacacacd  gacacacd gacacacacd
+[root@teacher ~]#
+
+
+[root@teacher ~]# grep '[0-10]' /code/re.txt 
+t0m t1m t2m T8m t10m
+[root@teacher ~]# grep '[0-19]' /code/re.txt 
+t0m t1m t2m T8m t10m
+[root@teacher ~]# grep '[0-9]' /code/re.txt 
+t0m t1m t2m T8m t10m
+[root@teacher ~]# grep '[0123456789]' /code/re.txt 
+t0m t1m t2m T8m t10m
+[root@teacher ~]# 
+
+[root@teacher ~]# grep '[_]' /code/re.txt 
+t m t_m t*m t$M  t-m t@m
+[root@teacher ~]# grep '[-]' /code/re.txt 
+t m t_m t*m t$M  t-m t@m
+[root@teacher ~]# grep '[_-@]' /code/re.txt 
+grep: 不适用的范围结束
+[root@teacher ~]# grep '[1-9]' /code/re.txt 
+t0m t1m t2m T8m t10m
+[root@teacher ~]# grep '[-_@]' /code/re.txt 
+t m t_m t*m t$M  t-m t@m
+[root@teacher ~]# 
+
+[root@teacher ~]# grep '^[0-9]' /code/re.txt 
+666888999
+[root@teacher ~]#
+[root@teacher ~]# grep '^[t0-9]' /code/re.txt 
+tam tbm tcm txm txym tom tomorrow t
+666888999
+t0m t1m t2m T8m t10m
+t m t_m t*m t$M  t-m t@m
+tabm tababm tabababm  tababababm 
+tm ttm tttm tttttm ttttttm
+[root@teacher ~]# 
+
+[root@teacher ~]# grep 'm' /code/re.txt 
+tam tbm tcm txm txym tom tomorrow t
+t0m t1m t2m T8m t10m
+t m t_m t*m t$M  t-m t@m
+tabm tababm tabababm  tababababm 
+tm ttm tttm tttttm ttttttm
+[root@teacher ~]# grep 'abc' /code/re.txt 
+[root@teacher ~]# grep 'ac' /code/re.txt 
 gacd gacacd gacacacd gacacacd  gacacacd gacacacacd  
+[root@teacher ~]# 
+
+  ]# grep '^t\|d$' /code/re.txt 
+
+[root@teacher ~]# grep 'g.\?d' /code/re.txt 
+gd gad gacacd gacacacd gacacacd  gacacacd gacacacacd
 [root@teacher ~]# 
