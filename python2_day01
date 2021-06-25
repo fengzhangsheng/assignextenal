@@ -198,6 +198,8 @@ try:
 except   指定异常的类型:
 	  有异常时要执行的代码
 
+
+
 try:
         #gender="女"
         print(gender)
@@ -331,21 +333,66 @@ finally:
 print("okokok")	
 
 
+#################################################
 
-raise  程序员自己定义 错误类型 和 错误信息
-		raise   错误类型(错误信息)
-def set_age(name,age):
-        if not 0 < age < 120:
-                raise ValueError("age out of range.")
-        print("%s is %s years old" % (name, age))
+异常处理的完整格式
+try:
+	可能发生异常的语句块
+except 异常1：
+	解决代码块
+except 异常2： abc
+	解决代码块
+except 异常3：
+	解决代码块
+else:
+	不发生异常才执行的代码块
+finally:
+	不管异常是否发生都要执行的代码块
 
-if __name__ == '__main__':
-        try:
-                set_age('bob', 25)
-        except ValueError:
-                print("重新执行脚本输入正确的数值")
+
+################################################
+主动触发异常，2种方式：
+	1 使用raise语句 ，自定义异常类型 及对应的报错信息  
+	    自定义的异常类型必须是python3支持的异常类型 ，不能胡写
+	2 使用assert语句， 判断条件不成立时执行断言 触发AssertionError异常	
+
+
+1 使用raise语句 ，自定义异常类型 及对应的报错信息  
+	    自定义的异常类型必须是python3支持的异常类型 ，不能胡写	
+def infoa(name,age):
+        if age < 0 or age > 120:
+                raise IndexError("请输入有效的年龄 0-120")
+
+        print("%s is %d old" %(name,age))
+
+try:
+        infoa("tom",29)
+
+except IndexError as e:
+        print(e)
+
+else:
+        print("程序执行完毕")
+	
+	
+	
+2 使用assert语句， 判断条件不成立时执行断言 触发AssertionError异常
+
+def infob(name,age):
+        assert not (age < 0 or age > 120) ,"请输入有效的年龄0-120"
+        print("%s is %d years old" %(name,age))
+        return age
+try:
+        age=infob("TOM",23)
+
+except AssertionError as err:
+        print(err)
+else:
+        if age < 20:
+                print("yang man")
         else:
-                print("输入信息正确脚本执行完毕")
+                print("your  too old old")
+
 
 
 ############################################
