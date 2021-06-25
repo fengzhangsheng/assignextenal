@@ -440,7 +440,7 @@ school = "Taren"
 L = list(range(1,11))
 
 def  pri():
-    print("你好 中国  祝贺建党100周年")
+    print("你好")
 
 def info():
     print("#" * 10)
@@ -464,7 +464,7 @@ BOB Taren
 ##########
 [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 10
-你好 中国  祝贺建党100周年
+你好
 [root@teacher code]# 
   
   
