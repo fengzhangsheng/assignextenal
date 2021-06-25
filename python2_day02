@@ -393,6 +393,193 @@ for data in fun(1,20):
 
 
 
+#############################################################
+3 模块   
+	3.1 模块知识的回顾
+三、模块
+ 一个.py 文件就是一个模块
+
+模块是含有一些列数据，函数，类等的程序	
+    
+作用 把相关功能的函数等放在一起有利于管理，有利于多人合作开发
+
+导入模块后可以使用模块里定义的变量   函数  及类 
+ 
+ 
+模块的分类
+ 
+1. 内置模块（在python3 程序内部，可以直接使用）
+  
+2. 标准库模块(在python3 安装完后就可以使用的 )
+  
+3. 第三方模块（需要下载安装后才能使用）
+  
+4. 自定义模块(用户自己编写.py脚本文件， 定义的变量   函数  及类)	
+
+总结一下 我已经使用过的内置模块
+time   datetime   os   sys   shutil   random  pickle  subprocess
+  
+ 查找模块对应的.py文件
+]# find    /  -name  "shutil.py" 
+  
+ [root@teacher code]# find    /  -name  "shutil.py" 
+/var/ftp/upload/Python-3.6.10/Lib/shutil.py
+/usr/lib/python3.6/site-packages/pip/_vendor/distlib/_backport/shutil.py
+/usr/lib64/python3.6/shutil.py
+/usr/local/lib/python3.6/site-packages/pip/_vendor/distlib/_backport/shutil.py
+/usr/local/lib/python3.6/shutil.py
+[root@teacher code]# 
+[root@teacher code]# vim  /usr/local/lib/python3.6/shutil.py  # 查看源代码
+ 
+  
+  
+  例子  自己写一个Python 脚本  让其他人可以导入使用
+  [root@teacher ~]# cat /code/module.py 
+name = "BOB"
+school = "Taren"
+L = list(range(1,11))
+
+def  pri():
+    print("你好 中国  祝贺建党100周年")
+
+def info():
+    print("#" * 10)
+[root@teacher ~]#
+
+[root@teacher code]# cat /code/mk.py
+import   module
+print ("调用其他模块的输出")
+print(module.name,module.school)
+module.info()
+print(module.L)
+
+age = 10
+print(age)
+module.pri()
+[root@teacher code]# 
+
+  [root@teacher code]# python3  /code/mk.py
+调用其他模块的输出
+BOB Taren
+##########
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+10
+你好 中国  祝贺建党100周年
+[root@teacher code]# 
+  
+  
+ ### 导入模块时 ，在什么路径下查找模块对应的.py文件
+#查看导入模块时，默认搜索路径
+>>> import sys
+>>> print(sys.path)
+['', '/usr/local/lib/python36.zip', '/usr/local/lib/python3.6', '/usr/local/lib/python3.6/lib-dynload', '/root/.local/lib/python3.6/site-packages', '/usr/local/lib/python3.6/site-packages']
+
+
+可以导入的模块对应的文件拷贝到 查找的默认某个目录下 ，方便导入
+# mv /code/module.py   /usr/local/lib/python3.6/
+
+导入模块的方法
+	1   import  模块名      #只导入一个模块
+	      使用时的这样用   模块名.方法
+	2    import  模块名，模块名，模块名，.....  #一次导入多个模块 
+	3     import  模块名  as   别名
+    4   from    模块名 import   方法名
+	5   from    模块名 import   *
+
+不同的导入方式 和对应的使用方法    休息到 15：05  
+#import module
+#module.pri()
+
+#from module import  info
+#info()
+#pri()
+
+#from module import  *
+#info()
+#pri()
+
+import  subprocess as s
+s.run("ls /code" , shell=True)
+
+
+
+
+	   3.2  内置模块  hashlib模块 和  tarfile模块
+	   
+  hashlib模块   对数据的完整性做校验 
+ >>> import  hashlib    #导入模块
+>>> sufa = hashlib.md5()    #指定使用的算法
+>>> data1 = "abcd"     # 要验证的数据
+>>> sufa.update(data1)  #报错
+>>> sufa.update(data1.encode()) #需要转码才可以验证
+>>> x1 = sufa.hexdigest()  #把获取到的摘要信息存储到变量x1
+>>> x1    # 输出摘要信息
+'e2fc714c4727ee9395f324cd2e7f331f'
+>>>   敲完 休息到  16：15
+  >>> data1 ="abcdeffff"   #更新源数据
+>>> sufa.update(data1.encode())  #再次生成摘要信息
+>>> x2=sufa.hexdigest() #把获取到的摘要信息存储到变量x2
+>>> x2 # 输出摘要信息
+'8f589a55fc205e3bb1570098361db4b2'
+>>> 
+  通过比较  摘要信息判断数据是否发生改变
+ >>> if  x1 != x2:   
+...     print("数据被改变")
+... else:
+...     print("数据无变化")
+... 
+数据被改变
+>>>  
+
+tarfile 模块
+>>> import subprocess
+>>> subprocess.run('du -sh /etc',shell=True)
+31M     /etc
+CompletedProcess(args='du -sh /etc', returncode=0)
+>>> 
+>>> import tarfile
+>>> 
+>>> tar = tarfile.open("/root/etc.tar.gz",'w:gz')
+>>> tar.add('/etc')
+>>> tar.close()
+
+>>> subprocess.run('du -sh /root/etc.tar.gz',shell=True)
+6.8M    /root/etc.tar.gz
+CompletedProcess(args='du -sh /root/etc.tar.gz', returncode=0)
+>>> 
+
+回顾 sys.argv    
+  获取执行执行python脚本时  脚本后跟的位置参数 例如
+																
+ ]# python3    /code/test1.py     a.txt     b.txt     c.txt   f    200
+  
+  执行脚本后 能够输出   3个文件的名字 例如
+  a.txt   
+  b.txt
+  c.txt  
+  f
+  200
+  
+  
+  import  sys
+#计算任意个 数字相加的和  python3  testa.py  1 4 8 9  12  34
+x = sys.argv
+#print(x)
+#print(x[1:])
+he = 0
+for  data in  x[1:]:
+        he += int(data)
+
+print(he)
+
+#使用偏函数的方式实现 
+filter(lambda i : str.isnumeric(i),x)
+
+
+
+sum( [ int(i) for i in  a[1:] ])
+
+
 
 
 
