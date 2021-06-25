@@ -1,0 +1,10 @@
+正则符号回顾使用的文件 
+
+[root@teacher ~]# cat /code/re.txt 
+tam tbm tcm txm txym tom tomorrow t
+t0m t1m t2m t8m t10m
+t m t_m t*m t$m  t-m t@m
+tabm tababm tabababm  tababababm 
+tm ttm tttm tttttm ttttttm
+gacd gacacd gacacacd gacacacd  gacacacd gacacacacd  
+[root@teacher ~]# 
