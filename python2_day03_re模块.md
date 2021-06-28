@@ -187,7 +187,25 @@ sub方法  把字符串中所有匹配正则表达式的地方替换成新的字
 she is a woman  beautiful woman
 >>> 
 
-```
+
+
+#验证输入mac地址是否合法
+]#  vim  mac.py
+import re
+
+mac=input("请输入正确的MAC地址 ")
+print("mac地址是: ",mac)
+
+m=re.match('([0-9a-fA-F][0-9a-fA-F]:){5}[0-9a-fA-F]{2}' , mac)
+
+if m is None:
+    print(mac,"地址非法")
+else:
+    print("mac地址:", m.group())
+:wq
+
+
+
 
 
 
