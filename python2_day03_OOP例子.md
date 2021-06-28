@@ -75,15 +75,16 @@ int(类)
 
 创建类、创建对象
 
-```
-class person():
-        money = '1亿' 
-        def run(self):
-                print("今天跑步 5公里")
+[root@teacher ~]# cat /code/class.py
+class  person():
+        money='1亿'
+        def running(self,name,gl):
+                print(f'{name}今天跑了{gl}公里')
 
-plj = person()
-plj.run()
-print(plj.money)
+p1 = person()
+print('定个小目标赚',p1.money)
+p1.running('静丫丫',28)
+[root@teacher ~]# 
 
 ```
 
