@@ -204,6 +204,14 @@ else:
     print("mac地址:", m.group())
 :wq
 
+import re
+fobj = open("/root/a.txt",'rt')
+data = fobj.readlines()
+for i  in data:
+    m = re.match('(\d+.){3}\d+',i)
+    print(m.group())
+
+fobj.close()
 
 
 
