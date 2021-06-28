@@ -6,64 +6,123 @@
 正则表达式的作用： 在数据里过滤与表达式匹配的数据
 
 正则符号 回顾 
-[root@teacher ~]# cat  /code/re.txt 
+
+[root@teacher ~]# cat /code/re.txt
 tam tbm tcm txm txym tom tomorrow t
+@tom
+nb
+atom  btom  ftomw  ttomz
+NB
 666888999
 t0m t1m t2m T8m t10m
 t m t_m t*m t$M  t-m t@m
-tabm tababm tabababm  tababababm 
+tabm tababm tabababm  tababababm
 tm ttm tttm tttttm ttttttm
-gd gad gacacd gacacacd gacacacd  gacacacd gacacacacd
+gd gad gacd gacacd gacacacd gacacacd  gacacacd gacacacacd
 [root@teacher ~]#
 
+正则匹配例子
+grep "^a" /code/re.txt
+grep '.' /code/re.txt
+grep '[at]' /code/re.txt
+grep '[abc]' /code/re.txt
+grep '[a-c]' /code/re.txt
+grep '[a-z]' /code/re.txt
+grep '[A-Z]' /code/re.txt
+grep '[a-Z]' /code/re.txt
+grep '[a-zA-Z]' /code/re.txt
+grep '[0-9]' /code/re.txt
+grep '[0-10]' /code/re.txt
+grep '[0-19]' /code/re.txt
+grep '[0-9]' /code/re.txt
+grep '[0123456789]' /code/re.txt
+grep '[_]' /code/re.txt
+grep '[-]' /code/re.txt
+grep '[_-@]' /code/re.txt
+grep '[1-9]' /code/re.txt
+grep '[-_@]' /code/re.txt
+grep '[^0-9]' /code/re.txt
+grep '^[0-9]' /code/re.txt
+grep '^t' /code/re.txt
+grep '^[t0-9]' /code/re.txt
+grep '[0-9]' /code/re.txt
+grep 'm' /code/re.txt
+grep 'abc' /code/re.txt
+grep 'ac' /code/re.txt
+grep '^t\|^[0-9]' /code/re.txt
+grep '^t\|d$' /code/re.txt
+grep 'd$' /code/re.txt
+grep '.$' /code/re.txt
+grep ' $' /code/re.txt
+grep 'd$' /code/re.txt
+grep '^t\|d$' /code/re.txt
+grep 'g.\?d' /code/re.txt
+grep '\btom' /code/re.txt
+grep '\btom\b' /code/re.txt
+grep '^.' /code/re.txt
+grep [afw] /code/re.txt
+grep [a-Z0-9] /code/re.txt
+grep ^ /code/re.txt
+grep . /code/re.txt
+grep ^. /code/re.txt
+grep ^[a-Z0-9] /code/re.txt
+grep [^a-Z0-9] /code/re.txt
+grep a /code/re.txt
+grep aaa /code/re.txt
+grep ... /code/re.txt
+grep ... /code/re.txt
+grep ^t /code/re.txt
+grep $ /code/re.txt
+grep .$ /code/re.txt
+grep ^. /code/re.txt
+grep ^..$ /code/re.txt
+grep ^..$ /code/re.txt
+grep 'g.d' /code/re.txt
+grep 'g.*d' /code/re.txt
+grep 'gacd' /code/re.txt
+grep 'gacd' /code/re.txt
+grep 'gac*d' /code/re.txt
+grep 'g(ac)*d' /code/re.txt
+grep 'g\(ac\)*d' /code/re.txt
+grep 'g\(ac\)+d' /code/re.txt
+grep 'g\(ac\)\+d' /code/re.txt
+grep 'g\(ac\)\?d' /code/re.txt
+grep 'g\(ac\)\{2\}d' /code/re.txt
+grep 'g\(ac\)\{2,\}d' /code/re.txt
+grep 'g\(ac\)\{2,3\}d' /code/re.txt
+grep 'g\(ac\)\{,3\}d' /code/re.txt
+grep 'tom' /code/re.txt
+grep '\btom' /code/re.txt
+grep 'tom' /code/re.txt
+grep '\btom' /code/re.txt
+grep '\btom\b' /code/re.txt
+grep '^.' /code/re2.txt
+grep '^..*' /code/re2.txt
+grep '(^.)(.*)' /code/re2.txt
+grep '^..*' /code/re2.txt
+grep '^.' /code/re.txt
 
-[root@teacher ~]# grep '[0-10]' /code/re.txt 
-t0m t1m t2m T8m t10m
-[root@teacher ~]# grep '[0-19]' /code/re.txt 
-t0m t1m t2m T8m t10m
-[root@teacher ~]# grep '[0-9]' /code/re.txt 
-t0m t1m t2m T8m t10m
-[root@teacher ~]# grep '[0123456789]' /code/re.txt 
-t0m t1m t2m T8m t10m
-[root@teacher ~]# 
+()  功能1  是把正则表达式作为整体匹配
+        grep 'gac*d'  /code/re.txt 
+        grep 'g\(ac\)*d' /code/re.txt
+        
 
-[root@teacher ~]# grep '[_]' /code/re.txt 
-t m t_m t*m t$M  t-m t@m
-[root@teacher ~]# grep '[-]' /code/re.txt 
-t m t_m t*m t$M  t-m t@m
-[root@teacher ~]# grep '[_-@]' /code/re.txt 
-grep: 不适用的范围结束
-[root@teacher ~]# grep '[1-9]' /code/re.txt 
-t0m t1m t2m T8m t10m
-[root@teacher ~]# grep '[-_@]' /code/re.txt 
-t m t_m t*m t$M  t-m t@m
-[root@teacher ~]# 
+    功能2  保存与正则表达式匹配的数据 专业叫法后向引用
+           按照括号的顺序 获取保存的数据
+           (正则表达式)(正则表达式)(正则表达式)
+                \1       \2          \3 
+例子            
+每行的第1个字符 都用小括号 () 括起来  后边剩下的所有都有[] 括起来
+例如  (A)[BCEFJ]  
+vim  re2.txt   
+abcefgj
+1234567890
+ABCDEFG
+WERSFSAFAW
+:%s/\(^.\)\(.*\)/(\1)[\2]/
 
-[root@teacher ~]# grep '^[0-9]' /code/re.txt 
-666888999
-[root@teacher ~]#
-[root@teacher ~]# grep '^[t0-9]' /code/re.txt 
-tam tbm tcm txm txym tom tomorrow t
-666888999
-t0m t1m t2m T8m t10m
-t m t_m t*m t$M  t-m t@m
-tabm tababm tabababm  tababababm 
-tm ttm tttm tttttm ttttttm
-[root@teacher ~]# 
-
-[root@teacher ~]# grep 'm' /code/re.txt 
-tam tbm tcm txm txym tom tomorrow t
-t0m t1m t2m T8m t10m
-t m t_m t*m t$M  t-m t@m
-tabm tababm tabababm  tababababm 
-tm ttm tttm tttttm ttttttm
-[root@teacher ~]# grep 'abc' /code/re.txt 
-[root@teacher ~]# grep 'ac' /code/re.txt 
-gacd gacacd gacacacd gacacacd  gacacacd gacacacacd  
-[root@teacher ~]# 
-
-  ]# grep '^t\|d$' /code/re.txt 
-
-[root@teacher ~]# grep 'g.\?d' /code/re.txt 
-gd gad gacacd gacacacd gacacacd  gacacacd gacacacacd
-[root@teacher ~]# 
+替换后的效果
+(a)[bcefgj]
+(1)[234567890]
+(A)[BCDEFG]
+(W)[ERSFSAFAW]
