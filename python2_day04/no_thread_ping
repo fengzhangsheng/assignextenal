@@ -1,3 +1,21 @@
+
+import time
+
+def say_hello():
+    for x in range(10):
+        print("hello!!!")
+        time.sleep(1)
+
+def say_world():
+    for y in range(10):
+        print('world!!!')
+        time.sleep(1)
+
+say_hello()
+say_world()
+
+############################################################
+
 import subprocess
 def ping(host_ip):
     r = subprocess.run('ping -c2 %s &> /dev/null' % host_ip,
