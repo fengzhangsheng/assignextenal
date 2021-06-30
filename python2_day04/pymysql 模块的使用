@@ -131,7 +131,7 @@ insert_sql = 'INSERT INTO user VALUES (%s,%s)'
 #conn.commit()  # 把SQL 语句提交到服务器
 
 #1.2 插入多行数据, 用 executemany 方法 第二个参数是 列表
-cursor.executemany(insert_sql,[('静静',21),('丫丫',17),('静丫丫',23),('漂亮姐',99)])
+cursor.executemany(insert_sql,[('静静','21'),('丫丫','17'),('静丫丫','23'),('漂亮姐','99')])
 conn.commit()  # 把SQL 语句提交到服务器
 
 #断开连接
