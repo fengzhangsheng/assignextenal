@@ -41,7 +41,7 @@ MariaDB [(none)]>   create   database    gamedb ;      # ls  /var/lib/mysql/
 
 4 创建存储数据的表 （创建存储数据的文件）
 MariaDB [(none)]>  create  table  
-gamedb.user(name  char(10), age  int ) DEFAULT set CHARSET=utf8;
+gamedb.user(name  char(10), age  int ) DEFAULT CHARSET=utf8;
 
 5 查看创建库和表
 MariaDB [(none)]> show   databases;   #看库
