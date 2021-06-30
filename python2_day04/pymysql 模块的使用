@@ -100,6 +100,7 @@ Query OK, 1 row affected (0.041 sec)
 MariaDB [gamedb]> 
 
 编写python脚本   通过执行脚本实现对数据的增删改查
+#导入模块pymysql
 # 脚本中的操作步骤如下
 #1连接数据库服务器  conn 
 #2 创建游标
@@ -179,3 +180,54 @@ print(result1)
 cursor.close()  #关闭游标
 conn.close()  # 关闭连接
 [root@teacher ~]# 
+
+
+编写修改数据的脚本
+[root@teacher code]# cat mysql_update.py 
+import pymysql
+conn = pymysql.connect(
+    host='localhost',
+    user='root',
+    password='123456',
+    db='gamedb',   # 制定操作哪一个数据库
+    charset='utf8'   # 制定操作的字符集
+)
+
+cursor = conn.cursor()
+
+#  修改
+update_sql = 'UPDATE user SET name=%s WHERE age=%s'
+cursor.execute(update_sql, ('大宝贝','21'))
+conn.commit()  # 提交
+
+#断开连接
+cursor.close()  #关闭游标
+conn.close()  # 关闭连接
+print("data update over")
+[root@teacher code]# 
+
+编写删除数据的脚本
+import pymysql
+conn = pymysql.connect(
+    host='localhost',
+    user='root',
+    password='123456',
+    db='gamedb',   # 制定操作哪一个数据库
+    charset='utf8'   # 制定操作的字符集
+)
+
+cursor = conn.cursor()
+
+
+# 4. 删除
+delete_sql = 'DELETE FROM user WHERE age=%s'
+r = cursor.execute(delete_sql, (21))
+conn.commit()
+
+
+#断开连接
+cursor.close()  #关闭游标
+conn.close()  # 关闭连接
+print("delete data ok")
+[root@teacher code]# 
+
