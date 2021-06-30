@@ -19,7 +19,7 @@ if __name__ == '__main__':
     t2 = threading.Thread(target=say_world)
     t2.start()
 
-    print("主线程运行结束")
+
 
     ###################################################
     import subprocess
