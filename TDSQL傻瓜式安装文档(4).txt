@@ -1,0 +1,334 @@
+#说明：本脚本根据李星和国颂同学提供文本+唐健同学整理而成，可根据实际情况，
+对IP地址和数据库端口进行批量替换后使用，本文只描述操作过程和所需脚本，截图请根据考试要求完成。
+
+无特别说明的情况下，目录指的是
+/data/tdsql_full_install_ansible
+
+第一部分：准备工作
+===================================================================================================================
+===================================================================================================================
+从腾讯云购买三台虚机(https://console.cloud.tencent.com/cvm/instance/index?rid=1)：
+
+#按流量计费，机型标准型S5(8C/16G),系统盘100G，新增3块云盘，每块盘200G，操作系统选centos v7.6，公网带宽100M，数量3台，新建安全组，
+开放所有端口，设置root密码，确认配置信息后开通。(配置费 5.88元/小时，网络费用0.8元/G)
+
+#机器IP地址如下(考试按实际的来)：
+42.193.145.65（公）
+172.16.0.5（内）
+
+42.193.145.221（公）
+172.16.0.13（内）
+
+42.193.143.249（公）
+172.16.0.16（内）
+
+#建议在云机器管理界面修改机器标识，分别为：
+Controller
+DB1
+DB2
+
+xshell配置好三台机器公网IP，连接名称建议跟上述机器标识一样，方便后续安装和使用。
+
+#下载软件包
+在controller机器操作：
+mkdir /data/temp
+cd /data/temp
+wget -c https://tdsql-p-1300276124.cos.ap-nanjing.myqcloud.com/tdsql.zip
+
+#挂载磁盘：
+下载大约需要4分钟，xshell新开Controller、DB1、DB2三台机器窗口，继续做安装前的配置工作
+挂载磁盘(lsblk查看一下三块盘的情况)
+
+#分别在Controller、DB1、DB2三台机器执行磁盘挂载命令
+mkfs.xfs -f /dev/vdb
+mkdir /data1
+echo '/dev/vdb /data1 xfs defaults 0 0' >> /etc/fstab
+
+mkfs.xfs -f /dev/vdc
+mkdir /data2
+echo '/dev/vdc /data2 xfs defaults 0 0' >> /etc/fstab
+
+mkfs.xfs -f /dev/vdd
+mkdir /data3
+echo '/dev/vdd /data3 xfs defaults 0 0' >> /etc/fstab
+
+mount -a 
+df -h
+
+
+#配置和验证免密(在Controller机器上操作，ssh-keygen，一直按回车，你懂的)
+
+ssh-keygen
+ssh-copy-id 172.16.0.5
+ssh-copy-id 172.16.0.13
+ssh-copy-id 172.16.0.16
+
+ssh 172.16.0.5
+ssh 172.16.0.13
+ssh 172.16.0.16
+
+
+下载完成解压：
+cd /data/temp
+unzip -O gbk tdsql.zip;
+cd /data/temp/tdsql/tdsql安装部署包
+#解压安装包
+unzip tdsql_full_install_ansible_10.3.14.1.0_D002.zip -d /data
+#下载安装文档
+sz TDSQL产品部署文档10.3.14.1.0_20200103.doc
+#下载赤兔升级包
+cd /data/temp/tdsql/赤兔版本升级包
+sz tdsqlpcloud.zip
+
+
+第二部分：TDSQL安装、配置
+===================================================================================================================
+===================================================================================================================
+
+安装TDSQL,机器规划(修改tdsql_hosts文件相关配置，IP没改部分就是保留默认，先进行ip查找替换，然后拷贝粘贴，你懂的)：
+
+cd /data/tdsql_full_install_ansible
+vim tdsql_hosts
+
+[envcheck]
+mac1 ansible_ssh_host=172.16.0.5
+mac2 ansible_ssh_host=172.16.0.13
+mac3 ansible_ssh_host=172.16.0.16
+
+
+[zk]
+zk1 ansible_ssh_host=172.16.0.5
+
+[scheduler]
+scheduler1 ansible_ssh_host=172.16.0.13
+scheduler2 ansible_ssh_host=172.16.0.16
+
+[oss]
+oss1 ansible_ssh_host=172.16.0.13
+oss2 ansible_ssh_host=172.16.0.16
+
+[chitu]
+chitu1 ansible_ssh_host=172.16.0.13
+chitu2 ansible_ssh_host=172.16.0.16
+
+[monitor]
+monitor1 ansible_ssh_host=172.16.0.13
+monitor2 ansible_ssh_host=172.16.0.16
+
+[db]
+db1 ansible_ssh_host=172.16.0.5
+db2 ansible_ssh_host=172.16.0.13
+db3 ansible_ssh_host=172.16.0.16
+
+[proxy]
+proxy1 ansible_ssh_host=172.16.0.5
+proxy2 ansible_ssh_host=172.16.0.13
+proxy3 ansible_ssh_host=172.16.0.16
+
+[hdfs]
+hdfs1 ansible_ssh_host=172.16.0.5
+
+
+[lvs]
+lvs1 ansible_ssh_host=10.120.109.204
+lvs2 ansible_ssh_host=10.120.109.205
+
+
+[kafka]
+kafka1 ansible_ssh_host=172.16.0.5
+kafka2 ansible_ssh_host=172.16.0.13
+kafka3 ansible_ssh_host=172.16.0.16
+
+[consumer]
+consumer1 ansible_ssh_host=172.16.0.5
+
+
+#安装ansible
+python settings/install_ansible.py
+
+#修改配置文件（修改zk_num，netif_name，zk_rootdir）
+vim group_vars/all
+
+zk_num: 1
+netif_name: eth0
+tdsql_pass: a+complex+password
+zk_rootdir: /tdsqlzk
+
+#继续安装tdsql
+sh encrypt.sh
+ansible-playbook -i tdsql_hosts part1_site.yml
+
+安装过程大约需要11分钟，这段时间可以做先熟悉初始化赤兔的过程。
+
+===================================================================================================================
+初始化赤兔(赤兔的第一个节点在DB1，admin/123456)
+http://42.193.145.221/tdsqlpcloud
+
+点下一步
+OSS服务列表:	
+172.16.0.13:8080
+172.16.0.16:8080
+
+点测试服务器，如正常，点下一步
+
+添加3个IDC
+IDC_GZ_YDGL_0401_000001
+IDC_GZ_YDGL_0401_000002
+IDC_GZ_YDGL_0401_000003
+
+
+添加机型规格(一定要大写，未说明的保持默认)
+TS80
+CPU（核）: 8C 内存（G）: 12G
+数据磁盘:135G   目录：/data1/tdengine/data
+日志：   45G    目录：/data1/tdengine/log
+
+PROXY
+CPU（核）: 1C 内存（G）: 1G
+数据磁盘:1G   
+日志：   1G    
+
+上报3个网关资源(IDC都选IDC_GZ_YDGL_0401_000001)：
+172.16.0.5
+172.16.0.13
+172.16.0.16
+
+上报DB资源(3个DB，机型选TS80，IDC选不同的IDC)	
+172.16.0.5(IDC_GZ_YDGL_0401_000001)
+172.16.0.13(IDC_GZ_YDGL_0401_000002)
+172.16.0.16(IDC_GZ_YDGL_0401_000003)
+	
+新增网关组
+不指定IP,从1个IDC中取3个ip
+
+创建实例(非分布式的监控库实例)
+规格可以自定义，比如(3G/2C，数据30G、日志10G)
+其它默认，开始创建实例，之后初始化实例。（需要4-5分钟）
+
+指定tdsqlpcloud的密码，测试一下数据库
+tdsqlpcloud/123456
+
+点开始安装，会弹出一个登陆页面，输入用户名密码（admin/123456）
+
+登陆进去，点实例管理，找到监控库的实例详情，找到如下信息：
+【可用】172.16.0.5:15001  【可用】172.16.0.13:15001  【可用】172.16.0.16:15001
+
+#你可以试试能否连上数据库
+#mysql -utdsqlpcloud -h 172.16.0.5 -P15001 -p'123456'
+
+#修改all文件（修改metadb_ip，metadb_ip_bak，metadb_user，metadb_password，如下）
+vim group_vars/all
+
+metadb_ip: 172.16.0.13
+metadb_port: 15001
+metadb_ip_bak: 172.16.0.16
+metadb_port_bak: 15001
+metadb_user: tdsqlpcloud
+metadb_password: 123456
+
+#继续安装
+sh encrypt.sh
+ansible-playbook -i tdsql_hosts part2_site.yml
+
+这个安装过程大约4分钟
+
+完成后在DB1上执行（注意是DB1）：
+cd /data/application/scheduler/bin
+./agent_config --mode modify --option="ocagent_port" --value="8966"
+./agent_config --mode modify --option="hadoop_dir" --value="/data/home/tdsql/hadoop-3.0.3/bin"
+
+#拷贝已经初始化好的赤兔配置文件到另一台赤兔（也就是DB2）
+scp -p /data/website/tdsqlpcloud/www/config/database.php 172.16.0.16:/data/website/tdsqlpcloud/www/config/
+scp -p /data/website/tdsqlpcloud/www/config/install.lock 172.16.0.16:/data/website/tdsqlpcloud/www/config/
+
+在DB2(172.16.0.16)上执行：
+cp -a /var/spool/cron/nginx /data/tools/nginx_cron_bak
+rm -f /var/spool/cron/nginx
+
+检查备机赤兔是否正常（就是DB2机器，登陆页面出来就可以了）
+http://42.193.143.249/tdsqlpcloud
+
+做到这里，如果你在管理页面上看集群总览，通常数据都是0，这时需要解决一下
+类找不到的问题。（看/data/application/analyze/nohup.out文件可以了解问题）
+
+在DB1上：
+cd /data/application/analyze/lib/
+mv logback-classic-1.2.3.jar logback-classic-1.2.3.jar_bak
+mv slf4j-log4j12-1.7.25.jar slf4j-log4j12-1.7.25.jar_bak
+cd /data/application/analyze/bin
+./restart.sh
+
+cd /data/application/collector/lib
+mv logback-classic-1.2.3.jar logback-classic-1.2.3.jar_bak
+mv slf4j-log4j12-1.7.25.jar slf4j-log4j12-1.7.25.jar_bak
+cd /data/application/collector/bin
+./restart.sh
+
+在DB2上：
+
+cd /data/application/analyze/lib/
+mv logback-classic-1.2.3.jar logback-classic-1.2.3.jar_bak
+mv slf4j-log4j12-1.7.25.jar slf4j-log4j12-1.7.25.jar_bak
+cd /data/application/analyze/bin
+./restart.sh
+
+cd /data/application/collector/lib
+mv logback-classic-1.2.3.jar logback-classic-1.2.3.jar_bak
+mv slf4j-log4j12-1.7.25.jar slf4j-log4j12-1.7.25.jar_bak
+cd /data/application/collector/bin
+./restart.sh
+
+一般过几分钟就能看到有数据。
+
+到此，tdsql的基础模块安装完成，接下里安装hdfs、kafka、consumer
+===================================================================================================================
+安装hdfs
+
+修改hostname
+
+#Controller：
+hostnamectl set-hostname node01
+
+#DB1：
+hostnamectl set-hostname node02
+
+#DB2：
+hostnamectl set-hostname node03
+
+#在Controller上，修改group_vars/all：hdfs_datadir: /data3/hdfs
+
+vim group_vars/all
+chown -R tdsql:users /data3
+ansible-playbook -i tdsql_hosts hdfs_single.yml
+
+su - tdsql
+hdfs namenode -format
+hdfs --daemon start namenode
+hdfs --daemon start datanode
+
+备用：关闭hdfs进程(hdfs --daemon stop datanode;hdfs --daemon stop namenode)
+===================================================================================================================
+安装kafka
+#在Controller上，修改group_vars/all：kafka_logdir: /data2/kafka
+
+vim group_vars/all
+ansible-playbook -i tdsql_hosts kafka.yml
+
+安装完成后，可以查看日志文件了解kafka是否正常
+vim /data/application/kafka_2.12-2.3.1/logs/server.log
+
+===================================================================================================================
+安装consumer
+#在Controller上
+
+ansible-playbook -i tdsql_hosts consumer.yml
+
+启动consumer
+cd /data/application/consumer/bin/
+./binlogconsumermgn --zklist 172.16.0.5:2181 --zkrootpath /tdsqlzk --kafkazklist 172.16.0.5:2181 --kafkazkrootpath /kafka --dev eth0
+
+至此，安装部分的工作全部结束，注意完成考试要求的截图
+1、写上自己姓名和机器IP
+2、购买机器的截图
+3、集群详情截图
+4、设备资源截图
