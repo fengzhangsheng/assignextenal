@@ -331,4 +331,4 @@ cd /data/application/consumer/bin/
 1、写上自己姓名和机器IP
 2、购买机器的截图
 3、集群详情截图
-4、设备资源截图
+4、设备资源截图啊
