@@ -1,0 +1,101 @@
+MySQL一条语句的执行过程先经过连接器(做权限校验连接客户端和服务端)然后分析器解读语法(如果查询缓存中有记录直接将结果返回给客户端)再然后优化器生成执行计划并进行索引选择，最后执行器操作存储引擎返回结果。
+wait_timeout参数设置指定时间断开连接默认八小时
+mysql_reset_connection重新初始化连接资源(每个连接会消耗内存，此操作可以应对内存耗尽的风险)
+query_cache_type=demand对于每一条SQL语句会默认查询缓存，表数据频繁更新，缓存数据每次重新刷新，导致查询缓存失败。设置此参数让SQL语句不查询缓存数据，用SQL_CACHE指定那条语句要查询缓存数据，例如：mysql> select SQL_CACHE * from T where ID=10；
+执行器在执行SQL之前调用的是precheck权限来验证权限
+commit work and chain 提交事务并进行下一个事务
+information_schema库里 innodb_trx表有事务的执行时间
+flush tables with read lock对整个库添加全局读锁
+1 alter table tbl_name nowait add column ...改变表结构之后会阻塞后面的语句
+2 alter table tbl_name wait n add column ...改变表结构之后不会阻塞后面的语句
+innodb_lock_wait_timeout设置锁等待超时时间，到了某个值自动杀死随机
+innodb_deadlock_detect=on自动检测死锁，发现死锁随机回滚两个互相等待的锁之一。
+set session transaction isolation level设置会话事务隔离级别
+start transaction with consistent snapshot开启一个事务
+savepoint做标记便于回滚
+rollback to savepoint回滚到某个标记
+select k from t where id=1 lock in share mode;加读共享锁
+select k from t where id=1 for update;加写锁
+innodb_change_buffer_max_size对于普通索引有效，设置change buffer和buffer pool的比例，change buffer记录的是对普通索引的行的更新记录，这个值对语句执行速度有益，采用普通索引的前提是该数据是静态的。
+set long_query_time=0设置接下来的语句记录在慢日志中
+innodb_stats_persistent设置为on时表示索引统计信息持久化存储，off为只存储在内存中。统计信息是优化器选择索引的重要依据，统计信息统计每个索引的基数，基数是判断索引区分度的标准，优化器会优先选择区分度好的索引执行SQL语句。
+analyze table t命令可以达到重新统计索引信息，然后用force index执行SQL语句
+sort_buffer_size此参数是order by语句在内存排序的空间大小，排序数据太大，超过这个数字就会用临时文件辅助排序
+max_length_for_sort_data针对内存不足可以参数可以让order by语句改变方式排序，其含义是排序字段小于这个参数的大小那么使用磁盘徽标的方式排序。
+tmp_table_size 这个配置限制了内存临时表的大小，默认值是16M，如果临时表大小超过了 tmp_table_size，那么内存临时表就会转成磁盘临时表。
+internal_tmp_disk_storage_engine参数则是磁盘临时表的大小
+cast(tradid as signed int) cast函数用于转换MySQL的字符类型
+通过查询 sys.schema_table_lock_waits 这张表，我们就可以直接找出造成阻塞的process id，把这个连接用 kill 命令断开即可。
+sys.innodb_lock_waits查出锁等待的线程
+max_connections 参数，用来控制一个 MySQL 实例同时存在的连接数的上限
+wait_timeout 参数表示的是，一个线程空闲
+wait_timeout 这么多秒之后，就会被 MySQL 直接断开连接。
+query_rewrite 功能，可以把输入的一种语句改写成另外一种模式。例如：
+     insert into query_rewrite.rewrite_rules(pattern, replacement, pattern_database) values(1,'','')
+     call query_rewrite.flush_rewrite_rules();
+binlog_cache_size 用于控制单个线程内 binlog cache 所占内存的大小(binlog日志是事务执行过程中先写binlog_cache然后在写进binlog日志)
+sync_binlog参数是决定每次事务执行时是否永久存储在磁盘中  
+  sync_binlog=0 的时候，表示每次提交事务都只 write，不 fsync；
+  sync_binlog=1 的时候，表示每次提交事务都会执行 fsync；
+  sync_binlog=N(N>1) 的时候，表示每次提交事务都 write，但累积 N 个事务后才fsync。
+ innodb_flush_log_at_trx_commit 参
+数，它有三种可能取值：
+1. 设置为 0 的时候，表示每次事务提交时都只是把 redo log 留在 redo log buffer 中 ;
+2. 设置为 1 的时候，表示每次事务提交时都将 redo log 直接持久化到磁盘；
+3. 设置为 2 的时候，表示每次事务提交时都只是把 redo log 写到 page cache。 
+binlog_group_commit_sync_delay 参数，表示延迟多少微秒后才调用 fsync;
+binlog_group_commit_sync_no_delay_count 参数，表示累积多少次以后才调用fsync
+slave_parallel_workers参数是用来调整备机复制主机binlog日志的线程数，有利于主备同步数据不延迟
+slave-parallel-type 来控制并行复制策略：
+     配置为 DATABASE，表示使用 MySQL 5.6 版本的按库并行策略；
+	 配置为 LOGICAL_CLOCK，要等第一组事务完全执行完成后，第二组事务才能开始执行，这样系统的吞吐量就不够。
+binlog-transaction-dependency-tracking并行策略：
+     1. COMMIT_ORDER，表示的就是前面介绍的，根据同时进入 prepare 和 commit 来判断是否可以并行的策略。
+     2. WRITESET，表示的是对于事务涉及更新的每一行，计算出这一行的 hash 值，组成集合 writeset。如果两个事务没有操作相同的行，也就是说它们的 writeset 没有交集，就可以并行。
+     3. WRITESET_SESSION，是在 WRITESET 的基础上多了一个约束，即在主库上同一个线程先后执行的两个事务，在备库执行的时候，要保证相同的先后顺序。
+set global sql_slave_skip_counter=1;解决当从数据库同步相同数据报重复错，表示主动跳过一个事务。
+slave_skip_errors当从库复制数据时，设置此参数可以跳过错误例如：
+     1062 错误是插入数据时唯一键冲突；
+     1032 错误是删除数据时找不到行。	 
+gtid_mode=on，enforce_gtid_consistency=on启动实例时加上此参数可以启动GTID模式
+gtid_next启动GTID模式后每个事物会有个gtid值，此参数韦设置事务gtid生成的方式有：
+     automatic，代表使用默认值。
+	 指定一个值如：set gtid_next='current_gtid’分两种情况判读，如果这个值在实例的gtid的集合里那么接下来的事务直接被系统忽略。如果不在这个实例的gtid集合里，那么这个值会被分配到接下来的事务里，加入这个实例的gtid集合。注：每开启一个事务都要重设gtid_next的值
+select master_pos_wait(file, pos[, timeout]);此命令可以在主从数据库结构查到一段时间执行的事务数，0代表在原地的posion，-1代表等待超时，null表示主从同步异常，此命令可以判断主从数据库的数据完整性。
+select wait_for_executed_gtid_set(gtid_set, 1);此命令也可判断主从数据库的数据完整性，适用于开启GTID模式：
+     1. 等待，直到这个库执行的事务中包含传入的 gtid_set，返回 0；
+     2. 超时返回 1。
+	 需要把 session_track_gtids的值设置为OWN_GTID然后通过 API 接口mysql_session_track_get_first 从返回包解析出 GTID 的值即可
+innodb_thread_concurrency此参数是设置MySQL的并发线程数，当超过这个连接线程数，后续连接将连不上数据库。
+performance_schema库里file_summary_by_event_name表里统计了每次IO请求的时间。
+执行 show engine innodb status语句可以看到死锁信息。
+把 sql_safe_updates 参数设置为 on当update和delete语句没有带where条件的时候可以会报错可以防止误删数据
+change replication filter replicate_do_table = (tbl_name)对于误删除的表可以先用备份手段还原一个临时库，然后再使用change master把临时库做成线上主库的从库，这样临时库复制时就会只复制误删除的表了。
+通过 CHANGE MASTER TO MASTER_DELAY = N命令，可以指定这个备库持续保持跟主库有 N 秒的延迟。	 
+net_buffer_length服务器MySQL的数据缓存空间默认16k
+InnoDB Buffer Pool 的大小是由参数 innodb_buffer_pool_size 确定的，一般建议设置成可用物理内存的 60%~80%。
+join_buffer_size在innodb引擎join语句里储存数据的空间大小。在join语句中straight_join。。。on 代表使用那个表做驱动表。
+read_rnd_buffer_size这个buffer是在join排序时的优化，将id的值储存并且排序。排序不用回表。set optimizer_switch="mrr_cost_based=off可以稳定的使用这个优化方案
+set optimizer_switch='mrr=on,mrr_cost_based=off,batched_key_access=on';启动MRR优化方式
+group by语句优化，用法往表里添加一个列并为这个列添加索引，用alter table 。。 add colume 。。 generated always as 。。，add index();
+group by语句优化，因为group by语句对于数据量大要用到磁盘临时表，加入SQL_BIG_RESULT,列如:select SQL_BIG_RESULT id%100 as m, count(*) as c from t1 group by m;
+alter table t1 add index a_btree_index using btree (id);此语句是用来给memory引擎表的主键id加上b-tree索引，这样做的好处是可以改变memory原有的存储方式。
+lower_case_table_names参数为0时即库表名写存储和访问均大小写敏感
+set global log_bin_trust_function_creators=1;设置此参数可以降低语法检查要求
+innodb_autoinc_lock_mode在执行事务的时候可以修改此参数决定自增锁申请后释放自增锁的时间：
+当设置为0的时候表示一个事务申请自增锁后必须语句执行结束后才能释放锁
+当设置为1的时候表示普通insert语句申请到自增锁后马上释放，类似insert。。。into则是语句执行结束在释放锁(建议)
+当设置为2的时候表示所有语句申请自增锁后马上释放锁
+insert into … on duplicate key update 这个语义的逻辑是，插入一行数据，如果碰到唯一键约束，就执行后面的更新语句。
+mysqldump导出数据参数：(导出之后可以用mysql -u$user -p$passwd -h$host -e "source xx.sql"语法来导入数据)
+    1 –single-transaction 的作用是，在导出数据的时候不需要对表 db1.t 加表锁，而是使用START TRANSACTION WITH CONSISTENT SNAPSHOT 的方法；
+    2 –add-locks 设置为 0，表示在输出的文件结果里，不增加lock语句
+	3 –no-create-info 的意思是，不需要导出表结构；
+    4 –set-gtid-purged=off 表示的是，不输出跟 GTID 相关的信息；
+    5 –result-file 指定了输出文件的路径，其中 client 表示生成的文件是在客户端机器上的
+	6–skip-extended-insert表示在输出文件中只显示一条完整的SQL语句
+insert into outfile导出csv文件(secure_file_priv参数决定outfile的路径值为empty时表示不限制，值可以为固定的路径如/etc/xx.csv,值为NULL时表示禁止这个语法)，load data infile xx.csv	into table导入数据
+mysql.tables_priv和mysql.columns_priv用户对列表权限的表
+open_files_limit这个参数指定了打开表文件的个数	
+	
+	
