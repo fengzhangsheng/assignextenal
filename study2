@@ -1,0 +1,10 @@
+mysqldump --single-tranction备份时不加读锁
+lock tables ... read 给表加锁
+unlock tables ... 对表释放锁
+###### Linux内核升级
+
+```shell
+rpm -Uvh http://mirror.ventraip.net.au/elrepo/elrepo/el7/x86_64/RPMS/elrepo-release-7.0-4.el7.elrepo.noarch.rpm
+yum --enablerepo=elrepo-kernel install -y kernel-lt
+grub2-set-default "CentOS Linux (4.4.182-1.el7.elrepo.x86_64) 7 (Core)"
+```
