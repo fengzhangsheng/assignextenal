@@ -238,8 +238,8 @@ cd /data/application/scheduler/bin
 ./agent_config --mode modify --option="hadoop_dir" --value="/data/home/tdsql/hadoop-3.0.3/bin"
 
 #拷贝已经初始化好的赤兔配置文件到另一台赤兔（也就是DB2）
-scp -p /data/website/tdsqlpcloud/www/config/database.php 192.168.1.22:/data/website/tdsqlpcloud/www/config/
-scp -p /data/website/tdsqlpcloud/www/config/install.lock 192.168.1.22:/data/website/tdsqlpcloud/www/config/
+scp -p /data/website/tdsqlpcloud/www/config/database.php 192.168.0.11:/data/website/tdsqlpcloud/www/config/
+scp -p /data/website/tdsqlpcloud/www/config/install.lock 192.168.0.11:/data/website/tdsqlpcloud/www/config/
 
 在DB2(172.16.0.16)上执行：
 cp -a /var/spool/cron/nginx /data/tools/nginx_cron_bak
@@ -325,7 +325,7 @@ ansible-playbook -i tdsql_hosts consumer.yml
 
 启动consumer
 cd /data/application/consumer/bin/
-./binlogconsumermgn --zklist 192.168.1.20:2181 --zkrootpath /tdsqlzk --kafkazklist 192.168.1.20:2181 --kafkazkrootpath /kafka --dev eth0
+./binlogconsumermgn --zklist 192.168.0.2:2181 --zkrootpath /tdsqlzk --kafkazklist 192.168.0.2:2181 --kafkazkrootpath /kafka --dev eth0
 
 至此，安装部分的工作全部结束，注意完成考试要求的截图
 1、写上自己姓名和机器IP
