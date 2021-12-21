@@ -1,0 +1,344 @@
+算数运算符扩展
+	+  -  *  /  %  **
+	+=  -=    *=    /=      //=     %=       **=
+
+if语句
+	作用:让程序根据条件选择性的执行其中的某一个语句块
+
+	语法：
+
+	if 条件表达式1:
+    		语句块1
+	elif 条件表达式2:
+    		语句块2
+	elif 条件表达式3:
+    		语句块3
+		...
+	elif 条件表达式n:
+    		语句块n
+	else:
+    		语句块
+
+	说明：
+
+	- elif 子句可以有0个，1个或多个,
+
+	- else 子句可以有0个或1个且只能放在最后
+
+if 条件表达式:
+	语句块
+	
+
+
+if 条件表达式:
+	语句块
+else:
+	语句块
+
+三目运算符：也叫三元运算符或三元表达式	
+
+if  ...  else ....
+
+
+	语法
+	条件成立执行的代码  if 条件  else  条件不成立执行的代码
+	
+	作用 简化代码,适用于简单的 if ... else...  
+       （条件成立 只有1条代码要执行  条件不成立也只有1条代码要执行）
+
+例子
+source = int(input(" please  input : "))
+s = int(input("请输入你的成绩: "))
+
+#if s > 90:
+#       print("good")
+#else:
+#       print("LOW")
+
+print("good") if s > 90 else print("LOW")
+
+
+ 
+ login2.py
+name =  input("请输入用户名: ")
+password = input("请是输入密码: ")
+
+if name == "bob"  and  password == "123456":
+        print("登录成功")
+else:
+        print("登录失败")
+
+
+
+
+	
+if判断语句可以嵌套使用
+cj = int( input("请输入你的成绩: ") )
+                                        休息到16：15
+if cj >= 0  and cj <= 100:
+        if cj > 90:
+                print("像我这么优秀人")
+        elif cj > 80:
+                print("好")
+        elif cj > 70:
+                print("良")
+        elif cj >= 60:
+                print("及格")
+        else:
+                print("我看好你奥!!!")
+else:
+        print("请输入有效的成绩0-100之间")
+
+
+
+循环结构 while    和  for   2种结构 
+作用：根据一定的条件，重复的执行某个语句块
+
+while循环语法
+
+while 真值表达式:
+    		语句块  
+else:
+    		语句块	
+
+	else可以省略 时的格式
+    while 真值表达式:
+			    语句块
+
+输出数字10-20之间的数字    使用while 循环实现
+
+x = 10
+while x <= 20:
+        print( x , end="  ")
+        x+=1
+
+print()
+
+
+当while循环条件不成立时给出提示信息
+x = 10
+while x <= 20:
+        print( x , end="  ")
+        x+=1
+else:
+	    print()
+		print(x ,"不大于20 循环结束")
+
+if判断语句可以和while循环嵌套使用 
+例子  输出1-100之间偶数 
+
+x = 1
+while  x <= 100:
+        if x % 2 == 0:
+                print(x)
+        x += 1
+
+
+要求：编写脚本 2_4.py  
+把从键盘输入的5个姑娘的名字保存到列表L1 里
+然后使用while循环 把L1 里的元素输出
+#使用循环生成列表元素
+x = 1
+L1=[]
+while  x  <= 6:   
+        name = input("请输入姑娘的名字")
+        L1.append(name)
+        x +=1
+
+#使用循环输出列表元素
+y = 0
+while y < len(L1):
+        print(L1[y])
+        y += 1
+
+for循环
+	作用 用来遍历可迭代对象的数据元素
+
+
+	遍历是指经历且只经历一遍
+
+	可迭代对象 是指能够依次获取数据元素的对象	 
+	比如列表、元组  、字符 、 字典 
+
+	语法
+	for 变量列表 in 可迭代对象:
+    		语句块
+	else:
+    		语句块
+
+#使用循环生成列表元素
+x = 1
+L1=[]
+while  x  <= 6:
+        name = input("请输入姑娘的名字")
+        L1.append(name)
+        x +=1
+
+#使用for循环输出列表元素
+for i in L1:
+        print(i)
+        #print("tarena")
+
+#使用while循环输出列表元素
+#y = 0
+#while y < len(L1):
+#       print(L1[y])
+#       y += 1
+
+
+
+
+
+	else可以省略
+
+	for 变量列表 in 可迭代对象:
+    		语句块
+
+
+s = 'ABCDE'
+for x in s:
+    print('x=', x)
+else:
+    print("遍历结束")
+
+
+python 编程里   break语句 和  continue语句的功能是什么
+控制for 和 while  循环结构的执行
+
+break语句  结束循环
+ 
+continue语句  终止当前循环 并开始下次循环
+
+x = 1
+while x  <= 10:  #条件成立 循环10次
+        #输出数字7为止
+        #if x == 8:
+        #       break
+
+        # 不输出数字 3  和  9 
+        if x == 3 or x == 9:
+                x += 1
+                continue
+        
+        print(x)
+        x += 1
+
+
+ pass  命令   让程序什么都不做  
+#while  True:
+if 1 == 1:
+        pass
+
+
+作用：创造数字
+格式  range(起始数字 , 结束数字 ,步长)
+#使用for循环把 192.168.4.0/24 网段所有主机ip地址输出
+for  i  in  range(1,256):
+        print("192.168.4.",i,sep="")
+
+
+#使用while循环把 192.168.4.0/24 网段所有主机ip地址输出
+x = 1
+while x <= 255:
+        print("192.168.4.",x,sep="")
+        x += 1
+
+
+
+综合练习
+
+
+假设一个用户信息如下:
+ 用户名是:root
+ 密码是: 123456
+写一个身份验证的程序，让用户输入用户名和密码登录, 用户名和密码全部匹配，提示登录成功。
+否则继续，最多尝试3次。3次不匹配以后提示登录失败.
+
+times = 0  # 用来记录循环次数
+while times < 3:
+    name = input('请输入用户名：')
+    passwd = input('请输入密码： ')
+    if name != 'root' or passwd != '123456':
+        print('输入有错请重新输入')
+        times += 1
+        continue
+    print("登陆成功！")
+    break
+else:
+    print('登陆失败！')
+
+
+九九乘法表
+[root@teacher code]# cat 99.py 
+j = 1
+while j <= 9:
+        i = 1
+        while i <= j:
+                z = i * j
+                print( i , "*" , j , "=" , z , end="  " )
+                i += 1
+        j += 1
+        print()
+[root@teacher code]#
+
+
+
+数据数据模块的使用
+>>> import random
+>>> L = ["石头","剪刀","布"]
+
+
+>>> random.choice('ABC')
+'B'
+>>> random.choice('ABC')
+'A'
+>>> random.choice('ABC')
+'C'
+>>> random.choice(L)
+'布'
+>>> random.choice(L)
+'剪刀'
+>>> random.choice(L)
+'布'
+>>> random.randint(1,10)
+4
+>>> random.randint(1,10)
+6
+>>> 
+
+
+猜拳游戏
+[root@teacher code]# cat game.py 
+import random
+player = int(input("请输入 0剪刀 1石头 2布:"))
+
+computer = random.randint(0,2)
+print("电脑的选择是:",computer)
+
+if (player==0 and computer==2) or (player==1 and computer==0) or (player==2 and computer==1):
+        print("赢了,,,,可以去买奶粉了.....")
+elif player==computer:
+    print("平局了,,,洗洗手决战到天亮....")
+else:
+    print("输了,,,回家拿钱 再来....")
+[root@teacher code]# 
+
+
+斐波那契数列 （后边的数 总是前2个数相加的和）
+[root@teacher code]# cat fb.py 
+a = 0
+b = 1
+
+for i in range(10):
+    print(a)
+    a,b = b,a + b              
+[root@teacher code]# 
+
+
+
+
+
+
+
+
+

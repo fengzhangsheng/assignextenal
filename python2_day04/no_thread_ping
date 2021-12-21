@@ -1,0 +1,41 @@
+
+进程？   进程就是运行中的程序
+进程 在运行过程中 独享系统资源 （如 CPU  内存 ） 多个进程同时运行时 是串行执行
+
+线程？	 线程是进程中的最小单元  一个进程里可以包含多个线程 ，多个线程同时运行时，共享资源  是并行执行
+
+		
+
+
+进程方式运行的代码 
+
+import time
+
+def say_hello():
+    for x in range(10):
+        print("hello!!!")
+        time.sleep(1)
+
+def say_world():
+    for y in range(10):
+        print('world!!!')
+        time.sleep(1)
+
+say_hello()
+say_world()
+
+############################################################
+#检测网络内哪些主机在线 哪些主机不在线
+import subprocess
+def ping(host_ip):
+    r = subprocess.run('ping -c2 %s &> /dev/null' % host_ip,
+                       shell=True)
+    if r.returncode == 0:
+        print(host_ip, ': up')
+    else:
+        print(host_ip, ': down')
+
+if __name__ == '__main__':
+    for x in range(1, 255):
+        ipv4 = '192.168.1.%d' % x
+        ping(ipv4)

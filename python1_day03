@@ -1,0 +1,343 @@
+一 文件管理
+	1.1  文件：一首歌  一部电影  一篇文章   写过的python脚本
+	
+	1.2 文件的操作流程
+		  1. 打开文件 open（）
+  		  2. 读/写文件 read()/write()
+  		  3. 关闭文件 close()
+
+  read() 函数的使用
+  
+>>> f = open("/code/a.txt",'r')
+>>> data=f.read()
+>>> f.read()
+''
+>>>f.close()
+>>> type(data)
+<class 'str'>
+>>> print(data)
+
+>>> f = open("/code/a.txt",'r')
+>>> f.read(4)
+'root'
+>>> f.read()  #读剩下的所有
+
+
+readline() 函数的使用
+>>> f = open("/code/a.txt",'r')
+>>> f.readline()
+'root:x:0:0:root:/root:/bin/bash\n'
+>>> 
+>>> f.readline()
+'bin:x:1:1:bin:/bin:/sbin/nologin\n'
+>>> 
+>>> f.readline()
+'daemon:x:2:2:daemon:/sbin:/sbin/nologin\n'
+>>> 
+>>> f.readline()
+'adm:x:3:4:adm:/var/adm:/sbin/nologin\n'
+>>> 
+>>> f.readline()
+'lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin\n'
+>>> f.readline()
+''
+>>> f.close()
+>>> 
+
+
+readlines()
+>>> f = open("/code/a.txt",'r')
+>>> data = f.readlines()
+>>> type(data)
+<class 'list'>
+>>> print(data)
+['root:x:0:0:root:/root:/bin/bash\n', 'bin:x:1:1:bin:/bin:/sbin/nologin\n', 'daemon:x:2:2:daemon:/sbin:/sbin/nologin\n', 'adm:x:3:4:adm:/var/adm:/sbin/nologin\n', 'lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin\n']
+>>> 
+
+>>> data[0]
+'root:x:0:0:root:/root:/bin/bash\n'
+>>> 
+>>> data[1]
+'bin:x:1:1:bin:/bin:/sbin/nologin\n'
+>>> 
+>>> for  x in  data:
+...     print(x)
+... 
+root:x:0:0:root:/root:/bin/bash
+
+bin:x:1:1:bin:/bin:/sbin/nologin
+
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+
+>>> 
+
+[root@teacher code]# cat 3_1.py 
+f = open("/code/a.txt",'r')
+data = f.readlines()
+
+for x  in  data:
+        print(x)
+
+[root@teacher code]# 
+
+write() 向文件添加内容
+
+>>> f = open('/code/c.txt','w')
+>>> f.write('ABCDE\n')
+6
+>>> f.write('23456\n')
+6
+>>> f.close()
+>>> 
+
+writelines() 向文件添加内容
+>>> f = open('/code/c.txt','a')
+>>> f.writelines(["wo kun le \n","bix shui \n"," xue bu hui\n"])
+>>> f.writelines(["wo kun le \n","bix shui \n"," xue bu hui\n"])
+>>> f.close()
+>>> 
+
+
+seek(offset[, whence])：移动文件指针到不同的位置
+
+offset是相对于某个位置的偏移量
+
+whence的值，0表示文件开头，1表示当前位置，2表示文件的结尾
+
+tell()：返回当前文件指针的位置
+
+>>> f = open('/code/c.txt','r')
+>>> f.tell()
+0
+>>> f.seek(0,2)
+83
+>>> f.tell()
+83
+>>> f.read()
+''
+>>> f.seek(0,0)
+0
+>>> f.read(10)
+'dafafABCDE'
+>>> f.tell()
+10
+>>> 
+
+with 子句 可以把打开的文件自动关闭
+>>> with open("/code/c.txt",'r') as fobj:
+...     data = fobj.readlines()
+... 
+>>> fobj.closed
+True
+>>> print(data)
+['dafafABCDE\n', '23456\n', 'wo kun le \n', 'bix shui \n', ' xue bu hui\n', 'wo kun le \n', 'bix shui \n', ' xue bu hui\n']
+>>> 
+
+从当前位置移动指针
+]# head -5 /etc/passwd > a.txt
+>>> f = open('/code/a.txt','rb')
+>>> f.tell()
+0
+>>> f.read(10)
+b'root:x:0:0'
+>>> f.tell()
+10
+>>> f.seek(2,1) #正数  从当前位置向右移动 2个字符
+12
+>>> f.tell()
+12
+>>> f.seek(-2,1) #负数 从当前位置向左移动 2个字符
+10
+>>> 
+
+******************函数基础**********************************************
+1.1  定义函数
+#功能计算数字10+10的和
+def numsum():
+       s = 10 + 10
+       print("10 + 10 =",s)
+       return s
+
+
+1.2  调用函数
+
+numsum()
+
+
+1.3 函数参数
+def numsum(a,b):
+        s = a + b
+        print(a , "+" , b , "=" , s)
+
+numsum(10,20)
+numsum(1,3)
+
+1.4 函数位置参数
+#功能计算任意个数相加和的脚本 可以在执行脚本输入 要计算的数
+import sys
+x=sys.argv
+
+y = 1
+sum = 0
+#while  y  < len(x):
+for  y in range(1,len(x)):
+        sum += int(x[y])
+        y += 1
+print("相加的和是: ",sum) 
+
+[root@teacher code]# python3 fun2.py  10 20 30
+相加的和是:  60
+[root@teacher code]# python3 fun2.py  10 20 30 90
+相加的和是:  150
+[root@teacher code]# 
+
+
+1.5 参数默认值
+#给函数的参数设置默认值，如果有多个形参默认值要在参数列表的末尾
+  
+#功能输出指定个数* 的一条线
+def  lines(y,x=20):
+        print("形参y的值是:",y)
+        print("*" * x)
+
+lines(56)
+lines(45,60)
+
+
+
+1.6 函数返回值
+def numsum():
+       s = 10 + 10
+       print("10 + 10 =",s)
+       return s
+
+x=numsum()
+print(x)
+
+计算器练习题
+
+[root@teacher code]# cat jsq1.py 
+jslx = input("请选择你要做什么运算：+  -  *  / ")
+L = []
+while True:
+        x = input("请输入要计算的数字,敲回车结束输入")          
+        if x == "":
+            break
+        L.append(x)
+
+def  he():
+        x = 0 #累加的和
+        y = 0 #定义循环结构的初值
+        while  y < len(L):    
+                x += int(L[y])
+                y += 1  
+        print("相加的和 = ", x)
+def cha():
+        x = int(L[0]) #做减法计算的初值
+        for  y  in range(1,len(L)):
+                x -= int(L[y])
+        print("相减的差 = ", x)
+def ji():
+        x = int(L[0]) #做乘法计算的初值
+        for  y  in range(1,len(L)):
+                x *= int(L[y])
+        print("相乘的积 = ", x)
+def shang():
+x = int(L[0]) #做除法计算的初值
+        for  y  in range(1,len(L)):
+                x //= int(L[y])
+        print("相除的商 = ", x)
+
+if jslx == "+":
+        he()
+
+elif jslx == "-":
+        cha()
+
+elif jslx == "*":
+        ji()
+
+elif jslx == "/":
+        shang()
+
+
+[root@teacher code]# python3 jsq1.py 
+请选择你要做什么运算：+  -  *  / +  
+请输入要计算的数字,敲回车结束输入1
+请输入要计算的数字,敲回车结束输入3
+请输入要计算的数字,敲回车结束输入4
+请输入要计算的数字,敲回车结束输入7
+请输入要计算的数字,敲回车结束输入
+相加的和 =  15
+[root@teacher code]# 
+
+**********************模块基础**************************
+模块  一个.py 文件就是一个模块 ，模块是含有一些列数据，函数，类等的程序
+
+- 作用 把相关功能的函数等放在一起有利于管理，有利于多人合作开发
+
+休息到 16：15 
+- 模块的分类
+  1. 内置模块（在python3 程序内部，可以直接使用）
+  2. 标准库模块(在python3 安装完后就可以使用的 )
+  3. 第三方模块（需要下载安装后才能使用）
+  4. 自定义模块(用户自己编写)
+
+导入模块  import  模块名 
+         import  模块名列表
+         from 模块名  import 函数
+例子
+>>> import os
+>>> import sys , string
+>>> from random import randint
+>>> string.digits
+'0123456789'
+>>> randint(1,3)
+3
+
+模块的特殊变量 __name__
+直接执行脚本时 __name__ 变量的值 是 __main__  被当做模块导入是 值是脚本名
+
+应用如下
+
+[root@teacher code]# cat cfb.py 
+def jjcfb():
+    j = 1
+    while j <= 9:
+        j += 1
+        print(j)
+
+if __name__ == '__main__':
+        jjcfb()
+[root@teacher code]# cat 10.py 
+import cfb
+#cfb.jjcfb()
+cfb.jjcfb()
+print("+" *  50)
+[root@teacher code]# python3 10.py 
+2
+3
+4
+5
+6
+7
+8
+9
+10
+++++++++++++++++++++++++++++++++++++++++++++++++++
+[root@teacher code]# 
+
+
+
+
+
+
+
+
+
+
+

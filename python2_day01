@@ -1,0 +1,502 @@
+
+ 时间模块    ***
+  Python 语言的 time 模块  ：  提供获取操作系统时间的相关命令
+  
+  时间的表示方式：
+	1 时间戳   从1970.1.1  0.0.0  到当前时间点经历的秒数
+	
+	2  UTC   世界协调时间   以英国格林威治这个城市所在的经度点为0时时区 向东或向
+	西每15度为1个时区  公分为24个时区  中国在东8区
+  
+（struct_time）9元组时间  ，
+				时间信息包括9部分（年 月 日  小时  分钟  秒  周   1年中的第几天  夏令时  ）
+]# python 3
+>>> import time  导入模块
+>>> help(time)  查看帮助信息
+
+>>> time.time()
+1624412201.7926717     时间戳  时间 
+>>> 
+
+>>> time.ctime()
+'Wed Jun 23 09:37:54 2021'   UTC  时间
+>>>
+   
+  >>> time.localtime()    9元组时间
+time.struct_time(tm_year=2021, tm_mon=6, tm_mday=23, tm_hour=9, tm_min=39, tm_sec=0, tm_wday=2, tm_yday=174, tm_isdst=0)
+>>>
+  
+ >>> t = time.localtime()   通过9元组元素对应的名称 获取指定值 
+ >>> t.tm_year   
+2021
+>>> t.tm_mon
+6
+>>> t.tm_mday
+23
+>>>
+
+>>> time.mktime(t)  把9元组时间转换回 时间戳时间
+1624412438.0
+>>>
+
+>>> time.time()
+1624412700.8895845
+>>> 
+>>> 
+>>> time.gmtime(time.time())  把时间戳转换成9元组时间
+time.struct_time(tm_year=2021, tm_mon=6, tm_mday=23, tm_hour=1, tm_min=45, tm_sec=24, tm_wday=2, tm_yday=174, tm_isdst=0)
+>>> 
+
+>>> time.sleep(3)    等待指定的秒数后再执行其他操作
+>>> for i  in  range(1,11):
+...     print(i)
+...     time.sleep(2)
+
+>>> t
+time.struct_time(tm_year=2021, tm_mon=6, tm_mday=23, tm_hour=9, tm_min=40, tm_sec=38, tm_wday=2, tm_yday=174, tm_isdst=0)
+
+>>> time.asctime(t)   把9元组数据转换成utc时间
+'Wed Jun 23 09:40:38 2021'
+>>> 
+
+>>> time.ctime()  获取系统的utc数据
+'Wed Jun 23 10:07:48 2021'
+>>> 
+
+# 把获取到的9元组时间格式化输出
+>>> time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
+'2021-06-23 10:15:01'
+
+>>> time.strftime('%Y-%m-%d %X',time.localtime())
+'2021-06-23 10:15:16'
+>>> 
+
+把个数时间转换为9元组时间
+>>> time.strptime('20211001 09:50:28','%Y%m%d  %H:%M:%S')
+time.struct_time(tm_year=2021, tm_mon=10, tm_mday=1, tm_hour=9, tm_min=50, tm_sec=28, tm_wday=4, tm_yday=274, tm_isdst=-1)
+>>>
+
+
+datetime模块 提供获取时间相关方法
+>>> import  datetime    导入datetime模块
+#获取系统utc时间
+>>> datetime.datetime.today()
+>>> datetime.datetime.now()
+
+
+>>> from datetime import datetime    仅仅把datetime模块下的datetime功能导入
+>>> datetime.today()
+datetime.datetime(2021, 6, 23, 10, 27, 46, 932321)
+>>> 
+>>> datetime.now()
+datetime.datetime(2021, 6, 23, 10, 28, 12, 486391)
+>>> 
+
+>>> datetime.now()   #获取系统现在时间
+datetime.datetime(2021, 6, 23, 10, 34, 45, 405801)
+>>> 
+>>> t=datetime.now()  把获取系统现在时间存放到变量t 里
+
+>>> datetime.ctime(t)     转换成UTC时间
+'Wed Jun 23 10:34:53 2021'
+>>>
+
+>>> datetime.now()    
+datetime.datetime(2021, 6, 23, 10, 38, 32, 170252)
+>>> t=datetime.now()
+>>> t.year
+2021
+>>> t.month
+6
+>>> t.day
+23
+>>> t.hour
+10
+>>> t.strftime('%Y')    #格式化输出时间
+'2021'
+>>> t.strftime('%Y/%m/%d')
+'2021/06/23'
+>>> t.strftime('%Y-%m-%d')
+'2021-06-23'
+>>> t.strftime('%Y-%m-%d %X')
+'2021-06-23 10:38:41'
+>>> 
+
+时间计算函数  timedelta
+>>> dt=datetime.now()
+>>> dt
+datetime.datetime(2021, 6, 23, 10, 58, 50, 518079)
+>>> 
+>>> x=timedelta(days=-2)
+>>> x
+datetime.timedelta(-2)
+>>> dt + x
+datetime.datetime(2021, 6, 21, 10, 58, 50, 518079)
+>>> 
+
+编写脚本 
+把当前系统的时间输出
+
+再输出昨天对应的时间
+
+再输出明天对应的时间
+
+[root@teacher ~]# cat sj.py 
+import time , datetime
+t1 =  datetime.datetime.now()
+t2 = t1.strftime('%Y-%m-%d %X')
+print("当前时间是",t2)
+days1 = datetime.timedelta(days=1)
+days2 = datetime.timedelta(days=-1)
+t0 =  t1 + days2   #昨天
+t4 =  t1 + days1   #明天
+print("昨天对应的时间",t0)
+print("明天对应的时间",t4)
+[root@teacher ~]# python3 sj.py 
+当前时间是 2021-06-23 11:37:31
+昨天对应的时间 2021-06-22 11:37:31.410444
+明天对应的时间 2021-06-24 11:37:31.410444
+[root@teacher ~]# 
+
+
+
+计算电脑 输出数字 1  - 20000000  之间的数据需要多长时间
+
+[root@teacher ~]# cat sj2.py 
+import time
+begin=time.time()
+print("请等待程序正在执行....")
+x = 1 
+while x  <= 20000000:
+    x+=1
+print("程序执行结束")
+end=time.time()
+
+print(begin)
+print(end)
+[root@teacher ~]# python3 sj2.py 
+请等待程序正在执行....
+程序执行结束
+1624420107.9776397
+1624420109.6811178
+[root@teacher ~]# 
+
+
+二 异常处理
+		什么是异常？
+		
+
+处理异常的基本格式
+try:
+	 有可能出现异常的错误代码
+except :
+	  有异常时要执行的代码
+
+处理异常的格式2
+try:
+	 有可能出现异常的错误代码
+except   指定异常的类型:
+	  有异常时要执行的代码
+
+
+
+try:
+        #gender="女"
+        print(gender)
+        print("hahaha ")
+
+except NameError as x:
+
+        print(x)
+
+print("okokok")
+
+
+
+处理异常的格式3  （捕获多种异常 ，捕获到就执行）
+try:
+	 有可能出现异常的错误代码
+
+except   指定异常的类型 as  变量名:
+	  有异常时要执行的代码
+	  
+except   指定异常的类型  as  变量名:
+		有异常时要执行的代码
+
+try:
+        #gender="女"
+        #print(gender)
+        print("hahaha ")
+        L=list("abc")
+        print(L[3])
+
+except NameError as x:
+        print(x)
+
+except IndexError as y:
+        print(y)
+
+print("okokok")
+
+
+处理异常的格式4  （一起捕获多种异常 ，捕获到某一个就执行）
+try:
+	 有可能出现异常的错误代码
+
+except   (错误名1,错误名2,.....)  as   变量名 :
+	  有异常时要执行的代码
+	  
+try:
+        #gender="女"
+        print(gender)
+        print("hahaha ")
+        L=list("abc")
+        print(L[3])
+
+except (NameError,IndexError) as error:
+        print("程序有错误请检查",error)
+
+
+print("okokok")
+	
+	
+使用内置的错误信息类  匹配所有的报错类型
+try:
+	 有可能出现异常的错误代码
+
+except   Exception  as   变量名 :
+	  有异常时要执行的代码
+
+try:
+        #foo()
+        #print(gender)
+        #print("hahaha ")
+        L=list("abc")
+        print(L[3])
+except  Exception   as   error:
+        print(error)
+
+print("okokok")
+
+处理异常的格式5  带else
+
+try:
+	 有可能出现异常的错误代码
+
+except   Exception  as   变量名 :
+	  有异常时要执行的代码
+else:
+	  没有异常输出时，执行的代码
+	  
+try:
+        #foo()
+        #print(gender)
+        #print("hahaha ")
+        L=list("abc")
+        #print(L[3])
+        print(L[1])
+except Exception as error:
+        print(error)
+else:
+        print("程序没有任何报错")
+
+print("okokok")
+
+
+处理异常的格式6  带finally     无条件执行finally下的代码
+
+
+try:
+	 有可能出现异常的错误代码
+
+except   Exception  as   变量名 :
+	  有异常时要执行的代码
+else:
+	  没有异常输出时，执行的代码
+finally：
+		必须执行的代码
+	
+try:
+        #foo()
+        #print(gender)
+        #print("hahaha ")
+        L=list("abc")
+        #print(L[1])
+        print(L[3])
+except Exception as error:
+        print(error)
+else:
+        print("程序没有任何报错")
+finally:
+        print("code over")
+
+print("okokok")	
+
+
+#################################################
+
+异常处理的完整格式
+try:
+	可能发生异常的语句块
+except 异常1：
+	解决代码块
+except 异常2： abc
+	解决代码块
+except 异常3：
+	解决代码块
+else:
+	不发生异常才执行的代码块
+finally:
+	不管异常是否发生都要执行的代码块
+
+
+################################################
+主动触发异常，2种方式：
+	1 使用raise语句 ，自定义异常类型 及对应的报错信息  
+	    自定义的异常类型必须是python3支持的异常类型 ，不能胡写
+	2 使用assert语句， 判断条件不成立时执行断言 触发AssertionError异常	
+
+
+1 使用raise语句 ，自定义异常类型 及对应的报错信息  
+	    自定义的异常类型必须是python3支持的异常类型 ，不能胡写	
+def infoa(name,age):
+        if age < 0 or age > 120:
+                raise IndexError("请输入有效的年龄 0-120")
+
+        print("%s is %d old" %(name,age))
+
+try:
+        infoa("tom",29)
+
+except IndexError as e:
+        print(e)
+
+else:
+        print("程序执行完毕")
+	
+	
+	
+2 使用assert语句， 判断条件不成立时执行断言 触发AssertionError异常
+
+def infob(name,age):
+        assert not (age < 0 or age > 120) ,"请输入有效的年龄0-120"
+        print("%s is %d years old" %(name,age))
+        return age
+try:
+        age=infob("TOM",23)
+
+except AssertionError as err:
+        print(err)
+else:
+        if age < 20:
+                print("yang man")
+        else:
+                print("your  too old old")
+
+
+
+############################################
+三、文件系统相关模块  之  OS模块 
+
+>>> import  os
+>>> os.getcwd()  # 返回当前的工作路径，pwd
+'/root/桌面/py02/day03_code'
+
+>>> os.mkdir('/tmp/nsd2012')   # mkdir /tmp/nsd2012
+
+>>> os.makedirs('/tmp/nsd2012/a/b/c')  # mkdir -p /tmp/nsd2012/a/b/c
+
+>>> os.listdir()  # ls
+['mygames.py', '.idea', 'mynote.txt', 'python.log', 'mynote2.txt', '03_file_seek.py', '04_myprog.py', '05_cp.py', '01_read_text_file_by_string.py', '02_read_text_file_by_bytes.py']
+
+
+>>> os.listdir('/tmp')  # ls /tmp  # 列出所有的文件夹
+[ 'nsd2012', 'dir1', 'dir2']
+
+>>> os.chdir('/tmp/nsd2012')  # cd  /tmp/nsd2012
+
+>>> os.getcwd()   # pwd
+'/tmp/nsd2012'
+
+>>> os.symlink('/etc/passwd', '/tmp/abc')  # ln -s /etc/passwd /tmp/abc
+>>> os.mknod('/tmp/myfile.txt')    # touch /tmp/myfile.txt
+
+>>> os.chmod('/tmp/myfile.txt', 0o755)  # chmod 755 /tmp/myfile.txt
+
+>>> os.rename('/tmp/myfile.txt', '/tmp/a.txt')  # mv /tmp/myfile.txt /tmp/a.txt
+>>> os.rmdir('/tmp/dir2')   # rmdir /tmp/dir2
+>>> os.remove('/tmp/a.txt')  # rm /tmp/a.txt
+
+
+四  OS模块扩展 之  OS.path 模块
+
+>>> import  os
+>>> os.path.isabs('/root/abc.txt')   # 判断是否为绝对路径
+True
+>>> os.path.isdir('/tmp/nsd2012')    # 判断是否是文件夹
+True
+>>> os.mknod('/tmp/b.txt')   # touch /tmp/b.txt
+>>> os.path.isfile('/tmp/b.txt')     # 判断是否是文件
+True
+>>> os.path.islink('/tmp/abc')      # 判断是否是软连接？
+True
+>>> os.path.ismount('/home')       # 存在并且是挂载点
+True
+
+>>> os.path.exists('/root')       # 判断文件或文件夹是否存在
+True
+>>> os.path.basename('/tmp/nsd2012/hello.py')  # 返回文件名
+'hello.py'
+>>> os.path.dirname('/tmp/nsd2012/hello.py')  # 返回路径
+'/tmp/nsd2012'
+
+>>> os.path.split('/tmp/nsd2012/hello.py')  # 拆分 路径和文件名
+('/tmp/nsd2012', 'hello.py')
+
+>>> os.path.join('/tmp/nsd2012', 'world.py')  # 拼接路径
+'/tmp/nsd2012/world.py'
+
+os.walk() 函数 遍历文件夹   （系统命令tree）
+
+>>> for x in os.walk('/tmp/nsd2012'):
+...    print(x)
+... 
+#  (路径 , 路径内的所有文件夹列表 , 路径内的所有文件列表)
+('/tmp/nsd2012', ['a', 'aa'], [])
+('/tmp/nsd2012/a', ['b'], ['aaa.txt'])
+('/tmp/nsd2012/a/b', ['c'], ['bbb.txt'])
+('/tmp/nsd2012/a/b/c', [], [])
+('/tmp/nsd2012/aa', ['bb'], [])
+('/tmp/nsd2012/aa/bb', ['cc'], [])
+('/tmp/nsd2012/aa/bb/cc', [], [])
+
+os 
+
+三、文件系统相关模块  之  pickle 模块 
+打开文件 的函数  与 open()  等效的  file() 函数     
+dump(数据,文件名)  存储数据到文件里
+
+load()    把文件里的数据读取出来
+
+>>> import pickle as p
+>>> f_name = "/code/f2.txt"
+>>> 
+>>> f = open(f_name,'wb')
+>>> 
+>>> L = [ "A" ,"M" , "C" ,"O" ]
+>>> 
+>>> p.dump(L,f)
+>>> f.close()
+>>> import subprocess
+>>> subprocess.run('ls /code/f2.txt' , shell=True)
+/code/f2.txt
+CompletedProcess(args='ls /code/f2.txt', returncode=0)
+>>>
+>>> f_name
+'/code/f2.txt'
+>>> 
+>>> f = open(f_name,'rb')
+>>> data = p.load(f)
+>>> print(data)
+['A', 'M', 'C', 'O']
+>>> 

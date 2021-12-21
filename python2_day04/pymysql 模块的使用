@@ -1,0 +1,233 @@
+# 安装 pymysql模块
+[root@teacher pymysql_pkgs]# ls
+PyMySQL-0.10.1-py2.py3-none-any.whl
+[root@teacher pymysql_pkgs]# pip3 install PyMySQL-0.10.1-py2.py3-none-any.whl
+
+#在交换模式下验证模块是否安装成功
+[root@teacher pymysql_pkgs]# python3
+Python 3.6.7 (default, Nov  5 2020, 03:55:09) 
+[GCC 8.3.1 20191121 (Red Hat 8.3.1-5)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import pymysql 可以导入没报错提示 为成功
+>>> 
+>>> exit()
+[root@teacher pymysql_pkgs]# 
+
+
+
+准备数据库服务器
+
+专门 提供 连接mysql服务命令的模块   使用模块需要安装pymysql      python包
+
+准备1台数据库服务器
+]# rpm  -q  mariadb-server || yum  -y  install  mariadb-server
+]# rpm  -q  mariadb ||  yum  -y  install  mariadb
+]# systemctl  start  mariadb
+]# ss  -utnlp  | grep  :3306     #查看到端口号3306 说明服务运行了 
+
+回顾在系统的命令行下如何管理数据库服务
+
+1 设置数据库管理员root用户密码  登录密码为123456
+[root@localhost ~]# mysqladmin -hlocalhost -p  password  "123456"
+Enter password:  没有旧密码直接回车
+[root@localhost ~]#
+
+2  使用设置的密码123456  连接服务
+[root@localhost ~]# mysql -uroot -p123456
+MariaDB [(none)]>  
+
+3  创建存储数据的库 （在数据库服务器上建文件夹）
+MariaDB [(none)]>   create   database    gamedb ;      # ls  /var/lib/mysql/
+
+4 创建存储数据的表 （创建存储数据的文件）
+MariaDB [(none)]>  create  table  
+gamedb.user(name  char(10), age  int ) DEFAULT CHARSET=utf8;
+
+5 查看创建库和表
+MariaDB [(none)]> show   databases;   #看库
+MariaDB [(none)]> use   gamedb ;  #进到库里
+MariaDB [(none)]>  show  tables ;   #看表       ]#ls  /var/lib/mysql/gamedb/user.*
+
+#复习对数据的增删改查
+MariaDB [(none)]>   insert into   gamedb.user  values ("xdd",60) ；     #增加
+MariaDB [(none)]>   insert into   gamedb.user  values ("pmm",51) ； 
+
+#查
+MariaDB [(none)]> select   *    from   gamedb.user;
++------+------+
+| name | age  |
++------+------+
+| xdd  |   60 |
+| pmm  |   51 |
++------+------+
+
+#改
+MariaDB [(none)]>  update  gamedb.user    set   age=20;
++------+------+
+| name | age  |
++------+------+
+| xdd  |   20 |
+| pmm  |   20 |
++------+------+
+#改符合条件的
+MariaDB [gamedb]> update  gamedb.user set age=16 where name="pmm";
+Query OK, 1 row affected (0.031 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [gamedb]> select  * from gamedb.user;
++------+------+
+| name | age  |
++------+------+
+| xdd  |   20 |
+| pmm  |   16 |
++------+------+
+2 rows in set (0.000 sec)
+
+MariaDB [gamedb]> delete from  gamedb.user where name="xdd"; #删复合条件的行
+Query OK, 1 row affected (0.039 sec)
+
+MariaDB [gamedb]> select  * from gamedb.user;
++------+------+
+| name | age  |
++------+------+
+| pmm  |   16 |
++------+------+
+1 row in set (0.000 sec)
+
+MariaDB [gamedb]> delete from  gamedb.user;   删除所有行
+Query OK, 1 row affected (0.041 sec)
+
+MariaDB [gamedb]> 
+
+编写python脚本   通过执行脚本实现对数据的增删改查
+#导入模块pymysql
+# 脚本中的操作步骤如下
+#1连接数据库服务器  conn 
+#2 创建游标
+#3 定义sql命令  insert into   |   select 
+#4 执行sql命令
+#5 提交命令   （命令下的回车）
+#6断开连接
+#在脚本最后给用户一个友好的提示
+
+
+编写存储数据的脚本
+[root@teacher ~]# cat /code/mysql_insert.py 
+import pymysql            #西安断网了 各位先写代码
+#连接数据库服务器
+conn = pymysql.connect(
+    host='localhost', #本机提供的数据库服务
+    user='root', #数据库管理员root
+    password='123456',  #连接密码
+    db='gamedb',   # 数据库名
+    charset='utf8'   # 制定操作的字符集utf8  表里可以存储中文
+)
+cursor = conn.cursor() #定义游标
+# 定义插入数据的sql命令
+insert_sql = 'INSERT INTO user VALUES (%s,%s)'
+
+# 插入一条数据到表
+#cursor.execute(insert_sql,('丫丫','18'))
+#conn.commit()  # 把SQL 语句提交到服务器
+
+#1.2 插入多行数据, 用 executemany 方法 第二个参数是 列表
+cursor.executemany(insert_sql,[('静静','21'),('丫丫','17'),('静丫丫','23'),('漂亮姐','99')])
+conn.commit()  # 把SQL 语句提交到服务器
+
+#断开连接
+cursor.close()  #关闭游标
+conn.close()  # 关闭连接
+
+print("data save ok")
+
+
+[root@teacher ~]# 
+
+编写查询数据的脚本
+[root@teacher ~]# cat /code/mysql_select.py 
+import pymysql
+conn = pymysql.connect(
+    host='localhost',
+    user='root',
+    password='123456',
+    db='gamedb',   # 制定操作哪一个数据库
+    charset='utf8'   # 制定操作的字符集
+)
+
+cursor = conn.cursor()
+
+
+#  查询数数据(定义查询语句并放到碗里)
+select_sql = 'SELECT * FROM user'
+cursor.execute(select_sql)
+
+#2.1 取出一行数据
+result1 = cursor.fetchone()
+print(result1)
+
+#2.2 取出2行数据
+#result2 = cursor.fetchmany(2)
+#print(result2)
+
+
+# 2.3 取出全部数据
+#result3 = cursor.fetchall()
+#print(result3)
+
+
+
+#断开连接
+cursor.close()  #关闭游标
+conn.close()  # 关闭连接
+[root@teacher ~]# 
+
+
+编写修改数据的脚本
+[root@teacher code]# cat mysql_update.py 
+import pymysql
+conn = pymysql.connect(
+    host='localhost',
+    user='root',
+    password='123456',
+    db='gamedb',   # 制定操作哪一个数据库
+    charset='utf8'   # 制定操作的字符集
+)
+
+cursor = conn.cursor()
+
+#  修改
+update_sql = 'UPDATE user SET name=%s WHERE age=%s'
+cursor.execute(update_sql, ('大宝贝','21'))
+conn.commit()  # 提交
+
+#断开连接
+cursor.close()  #关闭游标
+conn.close()  # 关闭连接
+print("data update over")
+[root@teacher code]# 
+
+编写删除数据的脚本
+import pymysql
+conn = pymysql.connect(
+    host='localhost',
+    user='root',
+    password='123456',
+    db='gamedb',   # 制定操作哪一个数据库
+    charset='utf8'   # 制定操作的字符集
+)
+
+cursor = conn.cursor()
+
+
+# 4. 删除
+delete_sql = 'DELETE FROM user WHERE age=%s'
+r = cursor.execute(delete_sql, (21))
+conn.commit()
+
+
+#断开连接
+cursor.close()  #关闭游标
+conn.close()  # 关闭连接
+print("delete data ok")
+[root@teacher code]# 
+

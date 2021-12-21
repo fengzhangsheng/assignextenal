@@ -1,0 +1,569 @@
+一、列表  的使用
+		1.1 列表的特点（背诵）
+		
+>>> L4 = [1 , 4 , 9 , 12]
+>>> print(L4)
+[1, 4, 9, 12]
+>>> L4[0:2]
+[1, 4]
+>>> L4[0:2]=["A","B","C"]
+>>> print(L4)
+['A', 'B', 'C', 9, 12]
+>>> 
+>>> L4[0:2]=["A1","B2"]
+>>> print(L4)
+['A1', 'B2', 'C', 9, 12]
+>>> 
+
+对列表操作的函数
+	添加元素到列表的末尾  append(值)
+	在指定下标前插入元素insert(下标,值)
+	统计元素出现的次数count(值)
+	输出元素在列表里的下标 index(元素的值)
+	把列表里的元素原地翻转 reverse()
+	对列表里的元素做升序排序 sort()
+	把其他列表的元素追加到当前列表里 extend(列表名)
+	删除元素  pop()    remove(元素值)
+
+
+>>> L5=list("abcdef")
+>>> print(L5)
+['a', 'b', 'c', 'd', 'e', 'f']
+>>> 
+>>> L5.insert(0,"plj")
+>>> print(L5)
+['plj', 'a', 'b', 'c', 'd', 'e', 'f']
+>>> 
+>>> 
+>>> L5.insert(3,"dmy")
+>>> print(L5)
+['plj', 'a', 'b', 'dmy', 'c', 'd', 'e', 'f']
+>>> 
+>>> L5.append("bb")
+>>> print(L5)
+['plj', 'a', 'b', 'dmy', 'c', 'd', 'e', 'f', 'bb']
+>>> 
+
+>>> L5.append("dmy")
+>>> print(L5)
+['plj', 'a', 'b', 'dmy', 'c', 'd', 'e', 'f', 'bb', 'dmy']
+>>> 
+>>> L5.count("dmy")
+2
+>>> x = L5.count("dmy")
+>>> print(x)
+2
+>>> 
+
+>>> print(L5)
+['plj', 'a', 'b', 'dmy', 'c', 'd', 'e', 'f', 'bb', 'dmy']
+>>> 
+>>> L5.index("bb")
+8
+>>> L5.index("wk")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ValueError: 'wk' is not in list
+>>> 
+>>> L5.index("dmy")
+3
+>>> L5.index("dmy")
+3
+>>> 
+>>> 'wk'  in  L5
+False
+>>> 'bb' in L5
+True
+>>> L5.index("bb")
+8
+>>> 
+
+>>> 'wk' in L5
+False
+>>> 
+>>> 'wk' not in L5
+True
+>>> 
+
+>>> L6=list("9afw")
+>>> L6.reverse()
+>>> print(L6)
+['w', 'f', 'a', '9']
+>>> 
+
+>>> L7 = [ 88,23,97,109,11]
+>>> print(L7)
+[88, 23, 97, 109, 11]
+>>> L7.sort()
+>>> print(L7)
+[11, 23, 88, 97, 109]
+>>> 
+
+>>> L8=list("abc")
+>>> L9=[1,2,3]
+>>> print(L8)
+['a', 'b', 'c']
+>>> print(L9)
+[1, 2, 3]
+>>> L8.extend(L9)
+>>> print(L8)
+['a', 'b', 'c', 1, 2, 3]
+>>> 
+>>> print(L9)
+[1, 2, 3]
+>>> 
+
+>>> L4
+['A1', 'B2', 'C', 9, 12]
+
+>>> L4.extend("abc")
+>>> L4
+['A1', 'B2', 'C', 9, 12, 'a', 'b', 'c']
+>>> 
+
+
+>>> print(L9)
+[1, 2, 3]
+>>> L9.remove(2)
+>>> print(L9)
+[1, 3]
+>>> 
+>>> print(L8)
+['a', 'b', 'c', 1, 2, 3]
+>>> 
+>>> L8.pop()
+3
+>>> print(L8)
+['a', 'b', 'c', 1, 2]
+>>> 
+>>> x=L8.pop()
+>>> print(L8)
+['a', 'b', 'c', 1]
+>>> print(x)
+2
+>>> 
+
+>>> del L6   #删除变量
+>>> print(L3)
+['a', 100, 200, 'TOM']
+>>> 
+>>> L3 = []   # 清空列表元素
+>>> print(L3)
+[]
+>>> print(L6)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'L6' is not defined
+>>> 
+
+
+三、字典类型数据的管理
+		3.1   字典类型数据的特点 (背诵)
+		
+		3.2 定义字典类型的数据
+>>> d1 = {}
+>>> d2 = dict()
+
+>>> type(d1)
+<class 'dict'>
+>>> type(d2)
+<class 'dict'>
+>>> 		
+		
+>>> d3 = {}.fromkeys(("tom","lucy","lili"),18)
+>>> print(d3)
+{'tom': 18, 'lucy': 18, 'lili': 18}
+>>> 
+
+>>> d4 = {"name":"bb" , "gender":"boy" , "age":30}
+>>> print(d4)
+{'name': 'bb', 'gender': 'boy', 'age': 30}
+>>> 
+>>> type(d4)
+<class 'dict'>
+
+
+字典元素没有下标 ， 要通过键值访问字典元素
+>>> d4['name']
+'bb'
+>>> d4['age']
+30
+>>> d4['gender']
+'boy'
+>>> 
+
+如果访问的键值存在 是更新   不存储就是添加新元素
+>>> d4['school']="tarena"
+>>> d4
+{'name': 'bb', 'gender': 'boy', 'age': 30, 'school': 'tarena'}
+>>> 
+>>> d4['name']="niuqun"
+>>> d4
+{'name': 'niuqun', 'gender': 'boy', 'age': 30, 'school': 'tarena'}
+>>> 
+
+
+删除 操作 
+>>> d4
+{'name': 'niuqun', 'gender': 'boy', 'age': 30, 'school': 'tarena'}
+>>> del d4['name']
+>>> d4
+{'gender': 'boy', 'age': 30, 'school': 'tarena'}
+>>> 
+>>> d4.clear()
+>>> d4
+{}
+>>> del d4
+>>> print(d4)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'd4' is not defined
+>>> 
+
+字典判断符号  in   not  in 
+>>> d4 = {"name":"bb" , "gender":"boy" , "age":30}
+>>> d4
+{'name': 'bb', 'gender': 'boy', 'age': 30}
+>>> 
+>>> 'name' in  d4
+True
+>>> 
+>>> 'bb' in  d4
+False
+>>> 
+>>> 'bb' not in  d4
+True
+>>> 
+
+len(变量名)    通用函数  统计长度 
+>>> s1 = "abc"
+>>> len(s1)
+3
+>>> L1 = list("abcde")
+>>> L1
+['a', 'b', 'c', 'd', 'e']
+>>> len(L1)
+5
+>>> t1 = ( 99 , 83 , "a" , "f")
+>>> t1
+(99, 83, 'a', 'f')
+>>> len(t1)
+4
+
+>>> d4
+{'name': 'bb', 'gender': 'boy', 'age': 30}
+>>> len(d4)
+3
+>>> 
+
+字典的内建方法
+copy()  拷贝
+
+>>> d4.copy()
+{'name': 'bb', 'gender': 'boy', 'age': 30}
+>>> 
+>>> dd4 =d4.copy()
+>>> dd4
+{'name': 'bb', 'gender': 'boy', 'age': 30}
+>>> d4
+{'name': 'bb', 'gender': 'boy', 'age': 30}
+>>> 
+
+get()  方法
+>>> d1 = {'name':"bob" , 'age':19 , 'gender':"boy"}
+>>> d1
+{'name': 'bob', 'age': 19, 'gender': 'boy'}
+>>> 
+>>> d1.get('school')
+>>> 
+>>> d1.get('name')
+'bob'
+>>> 
+>>> d1.get('school',"not set define")
+'not set define'
+>>> 
+
+setdefault()   方法
+
+>>> del d4
+>>> 
+>>> d4 = {'name':"bob" , 'age':19}
+>>> d4
+{'name': 'bob', 'age': 19}
+>>> d4.setdefault('name')
+'bob'
+>>> d4.setdefault('school','tarena')
+'tarena'
+>>> d4
+{'name': 'bob', 'age': 19, 'school': 'tarena'}
+>>> 
+>>> d4.setdefault('name')
+'bob'
+>>> d4.setdefault('class')
+>>> d4.setdefault('class',"2103")
+>>> d4
+{'name': 'bob', 'age': 19, 'school': 'tarena', 'class': None}
+
+items()
+>>> d1.items()
+dict_items([('name', 'bob'), ('age', 19), ('gender', 'boy'), ('school', None), ('class', None)])
+>>> 
+
+keys()
+
+>>> d1
+{'name': 'bob', 'age': 19, 'gender': 'boy', 'school': None, 'class': Non
+>>> d1.keys()
+dict_keys(['name', 'age', 'gender', 'school', 'class'])
+
+values()
+>>> d1
+{'name': 'bob', 'age': 19, 'gender': 'boy', 'school': None, 'class': None}
+>>> 
+>>> d1.values()
+dict_values(['bob', 19, 'boy', None, None])
+
+update()
+>>> d1
+{'name': 'bob', 'age': 19, 'gender': 'boy', 'school': None, 'class': None}
+>>> 
+>>> d2 = {"成绩":98 , "排名":5}
+>>> 
+>>> d1.update(d2)
+>>> print(d1)
+{'name': 'bob', 'age': 19, 'gender': 'boy', 'school': None, 'class': None, '成绩': 98, '排名': 5}
+>>> 
+
+
+使用 for循环遍历字典
+>>> d4
+{'name': 'bob', 'age': 19, 'school': 'tarena'}
+
+输出每个元素的key 
+
+>>> for i  in d4.keys():
+...     print(i)
+... 
+name
+age
+school
+class
+>>> 
+输出每个元素的值 
+      
+>>> d4.values()
+dict_values(['bob', 19, 'tarena', None])
+>>> for i in d4.values():
+...     print(i)
+... 
+bob
+19
+tarena
+None
+>>> 
+	   
+把key  和  key 对应的值 一起输出 	   
+>>> d4.items()
+dict_items([('name', 'bob'), ('age', 19), ('school', 'tarena'), ('class', None)])
+>>> 
+>>> for   i  ,  j   in d4.items():
+...     print(i,j)
+... 
+name bob
+age 19
+school tarena
+class None
+>>> 
+>>> d4
+{'name': 'bob', 'age': 19, 'school': 'tarena', 'class': None}
+>>> 
+>>> for i  in d4.keys():
+...     print(d4[i])
+... 
+bob
+19
+tarena
+None
+>>> 
+
+
+使用 for循环遍历字典
+>>> d4
+{'name': 'bob', 'age': 19, 'school': 'tarena'}
+
+输出每个元素的key 
+
+>>> for i  in d4.keys():
+...     print(i)
+... 
+name
+age
+school
+class
+>>> 
+输出每个元素的值 
+      
+>>> d4.values()
+dict_values(['bob', 19, 'tarena', None])
+>>> for i in d4.values():
+...     print(i)
+... 
+bob
+19
+tarena
+None
+>>> 
+	   
+把key  和  key 对应的值 一起输出 	   
+>>> d4.items()
+dict_items([('name', 'bob'), ('age', 19), ('school', 'tarena'), ('class', None)])
+>>> 
+>>> for   i  ,  j   in d4.items():
+...     print(i,j)
+... 
+name bob
+age 19
+school tarena
+class None
+>>> 
+>>> d4
+{'name': 'bob', 'age': 19, 'school': 'tarena', 'class': None}
+>>> 
+>>> for i  in d4.keys():
+...     print(d4[i])
+... 
+bob
+19
+tarena
+None
+>>> 	   
+	   
+
+
+集合数据类型的使用
+	容器类型  也可以存储多个数据  
+	无序  可变  值不允许重复
+	set()   定义的是可变集合 类型
+	frozenset()  定义的是不可变集合 类型
+	
+定义集合类型的变量
+>>> s1 = set("hello")
+>>> type(s1)
+<class 'set'>
+>>> 
+>>> print(s1)
+{'e', 'o', 'l', 'h'}
+>>> 
+>>> s2 = {"a",3,0,"w"}
+>>> type(s2)
+<class 'set'>
+>>> s2
+{0, 'a', 3, 'w'}
+>>> 
+
+>>> s3 = frozenset( {1,"a","c",3.14} )
+>>> type(s3)
+<class 'frozenset'>
+>>>
+
+集合类型的比较符号 in   not  in  
+
+>>> s3
+frozenset({1, 3.14, 'a', 'c'})
+>>> 
+>>> 'plj'  in s3
+False
+>>> 
+>>> 'c'  in s3
+True
+>>> 
+>>> 'plj'  not in s3
+True
+>>> 
+>>> len(s2)       #统计集合元素的个数
+4
+>>> s2
+{0, 'a', 3, 'w'}
+>>> 
+
+
+
+
+集合的内建方法
+add(值)          添加
+remove(值)  移除
+
+>>> s2
+{0, 'a', 3, 'w'}
+>>> 
+>>> s2.add('bb')
+>>> 
+>>> s2
+{0, 3, 'a', 'w', 'bb'}
+>>> 
+>>> s2.remove(3)
+>>> 
+>>> s2
+{0, 'a', 'w', 'bb'}
+>>> 
+
+update(值) 
+>>> s2
+{0, 'a', 'w', 'bb'}
+>>> s2.update('ABCDE')
+>>> s2
+{0, 'D', 'a', 'E', 'A', 'w', 'C', 'B', 'bb'}
+>>> 
+>>> s2.update(["bob",3.88, True])
+>>> s2
+{0, 'D', True, 3.88, 'a', 'E', 'A', 'w', 'C', 'B', 'bb', 'bob'}
+>>> 
+
+issubset()
+issuperset()
+
+>>> s3
+{'b', 'c', 'a', 'd'}
+>>> s4
+{'z', 'k', 'a', 'w'}
+>>> 
+>>> s3.issubset(s4)
+False
+>>> s3.issuperset(s4)
+False
+>>> 
+
+
+
+union()   并集比较方法
+insertsection()    交集比较方法
+difference()   差集比较方法
+
+集合类型的比较符号
+&    交集     返回2个集合里都有的数据
+|      并集    把符号 2边的集合合并并去掉重复值   
+-     差集     用符号左边和 右边的比较 ，显示左边比右边多的数据 
+
+>>> s1 = {"西游记","红楼梦","水浒传","三国演绎"}
+>>> s2 = {"jingpingmei","mudiangting","聊斋志异","红楼梦"}
+>>> 
+>>> s1  & s2    # 获取集合中都有的数据
+{'红楼梦'}
+>>> 
+>>> x = s1  & s2    等效于  s1.intersection(s2)
+>>> print(x)
+{'红楼梦'}
+>>> 
+>>> s1  |  s2    等效于     s1.union(s2)
+
+{'水浒传', '三国演绎', 'mudanting', '西游记', '红楼梦', '聊斋志异', 'jinpingmei'}
+>>> 
+
+>>> 
+-  差集  ： 用符号左边和 右边的比较 ，显示左边比右边多的数据 
+>>> s1  -  s2       等效于   s1.difference(s2)
+{'西游记', '水浒传', '三国演绎'}
+>>> 
+>>> s2  -  s1    
+{'聊斋志异', 'mudanting', 'jinpingmei'}
+>>> 	   
