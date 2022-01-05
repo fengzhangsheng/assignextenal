@@ -1,0 +1,33 @@
+cd tdsql_10.3.17.3.0/
+mkdir /data1
+mkfs.xfs -f /dev/vdb
+echo "/dev/vdb /data1 xfs defaults 0 0" >> /etc/fstab
+unzip -O gbk tdsql_10.3.17.3.0.zip &>/dev/null
+ssh-keygen -N'' -b2048 -f /root/.ssh/id_rsa
+cd tdsql_install/scripts/
+sh nokey.sh &>/dev/null
+export LANG='en_US.UTF-8'
+cd ..
+source scripts/environment_set &> /dev/null
+sh scripts/install_ansible.sh &> /dev/null
+ansible-playbook -i tdsql_hosts playbooks/tdsql_part1_site.yml
+ansible-playbook -i tdsql_hosts playbooks/tdsql_part2_site.yml
+mkfs.xfs -f /dev/vdc1 &>/dev/null
+mkfs.xfs -f /dev/vdc2 &>/dev/null
+mkfs.xfs -f /dev/vdc3 &>/dev/null
+mkdir -p /data{2..4}
+echo "/dev/vdc1 /data2 xfs defaults,noatime 0 0" >>/etc/fstab
+echo "/dev/vdc2 /data3 xfs defaults,noatime 0 0" >>/etc/fstab
+echo "/dev/vdc3 /data4 xfs defaults,noatime 0 0" >>/etc/fstab
+mount -a
+ansible-playbook -i tdsql_hosts playbooks/tdsql_hdfs.yml
+su - tdsql
+hdfs dfsadmin -report
+mkfs.xfs -f /dev/vdd1 &>/dev/null
+mkfs.xfs -f /dev/vdd2 &>/dev/null
+mkdir -p /data{6..7}
+echo "/dev/vdd1 /data6 xfs defaults,noatime 0 0" >>/etc/fstab
+echo "/dev/vdd2 /data7 xfs defaults,noatime 0 0" >>/etc/fstab
+mount -a
+ansible-playbook -i tdsql_hosts playbooks/tdsql_kafka.yml
+ansible-playbook -i tdsql_hosts playbooks/tdsql_consumer.yml

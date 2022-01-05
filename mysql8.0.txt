@@ -1,0 +1,28 @@
+timestampdiff(year,birth,curdate())计算两个字段时间差，即年龄
+date_add(curdate(),interval 1 month)表示月份之间的间隙是隔一个月，防止出现13月的出现
+mod(month(curdate()),12)+1;效果同上mod函数把当前月份封装成0-11，而后加一即1月到12月
+SET sql_mode = 'ONLY_FULL_GROUP_BY';当使用count(*)语句时如果设置此参数那么，语句后面要加上group by否则会报错，改制可以设为‘’。
+set sql_mode=NO_AUTO_VALUE_ON_ZERO在使用了increment字段时默认序列可以从0开始如果设置了该sql模式那么就不能从0开始做序列
+LAST_INSERT_ID()查询当前increment的值
+mysql --max_allowed_packet=16M表示通信缓存区的最大大小
+key_buffer_size=512M密钥缓存区的大小为512M
+comp_err命令可以对日志的一些操作
+mysql_secure_installation命令可以设置一些安全配置
+sql_safe_updates=1启动安全模式，对于delete和update语句没有加where条件的情况下会执行不了SQL语句
+sql_select_limit=1000限制select语句的数目
+max_join_size=1000000限制join的行数
+range_optimizer_max_mem_size设置最大内存量
+--skip-reconnect加上此参数mysql客户端禁止重连
+binlog_encryption这是linux系统变量，为了防止MySQL文件被篡改将这个值设为on。
+--skip-symbolic-links禁止符号链接防止数据目录被误删
+max_user_connections限制单个用户的连接数
+local_infilelocal_infile针对load data语句在服务端设置允许客户端操作的文件
+ENABLED_LOCAL_INFILE在客户端设置此参数来启用或禁用load data语句
+--local-infile=0用于控制是否加载本地文件针对load data语句
+
+
+
+
+
+
+
