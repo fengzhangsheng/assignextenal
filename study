@@ -97,5 +97,7 @@ mysqldump导出数据参数：(导出之后可以用mysql -u$user -p$passwd -h$h
 insert into outfile导出csv文件(secure_file_priv参数决定outfile的路径值为empty时表示不限制，值可以为固定的路径如/etc/xx.csv,值为NULL时表示禁止这个语法)，load data infile xx.csv	into table导入数据
 mysql.tables_priv和mysql.columns_priv用户对列表权限的表
 open_files_limit这个参数指定了打开表文件的个数	
-	
+log_slow_extra开启此参数为慢查询日志提供6个查询度量
+log_slow_verbosity开启此参数针对Percona服务器在慢查询日志中提供更多的指标结合系统变量log_slow_rate_limit使其同时支持查询采样(记录查询的百分比)
+
 	
